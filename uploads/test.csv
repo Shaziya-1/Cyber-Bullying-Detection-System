@@ -1,0 +1,21 @@
+File 1,File 2,Similarity (%)
+Shavez.txt,Shaziya.txt,9.20
+Shavez.txt,Tamanna.txt,17.07
+Shavez.txt,Y.txt,17.07
+Shavez.txt,Z.txt,17.07
+Shaziya.txt,Tamanna.txt,11.96
+Shaziya.txt,Y.txt,11.96
+Shaziya.txt,Z.txt,11.96
+Tamanna.txt,Y.txt,100.00
+Tamanna.txt,Z.txt,100.00
+Y.txt,Z.txt,100.00
+Shavez.txt,Shaziya.txt,9.20
+Shavez.txt,Tamanna.txt,17.07
+Shavez.txt,Y.txt,17.07
+Shavez.txt,Z.txt,17.07
+Shaziya.txt,Tamanna.txt,11.96
+Shaziya.txt,Y.txt,11.96
+Shaziya.txt,Z.txt,11.96
+Tamanna.txt,Y.txt,100.00
+Tamanna.txt,Z.txt,100.00
+Y.txt,Z.txt,100.00

@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cyberbullying Detection System — Dashboard (Countries)</title>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- PapaParse for CSV parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#ffffff; --text:#0f172a; --muted:#6b7280;
+      --accent:#6d28d9; --accent-2:#ef4444; --accent-3:#06b6d4;
+      --glass: rgba(15,23,42,0.04);
+      --success:#10b981;
+    }
+    .dark {
+      --bg:#071122; --card:#071224; --text:#e6eef6; --muted:#9aa7b8;
+      --accent:#8b5cf6; --accent-2:#fb7185; --accent-3:#22d3ee;
+      --glass: rgba(255,255,255,0.03); --success:#34d399;
+    }
+
+    *{box-sizing:border-box;}
+    body {
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap{max-width:1200px;margin:18px auto;padding:18px;}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .title{display:flex;gap:12px;align-items:center}
+    .brand-icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-3));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px}
+    h1{margin:0;font-size:18px}
+    .controls{display:flex;gap:8px;align-items:center}
+    .btn{background:var(--card);border:1px solid rgba(0,0,0,0.06);padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--text)}
+    .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06)}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+    select,input[type="search"],input[type="file"]{padding:8px 10px;border-radius:8px;border:1px solid rgba(15,23,42,0.06);min-width:140px;background:var(--card);color:var(--text)}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;align-items:start}
+    .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 1px 2px var(--glass);}
+
+    /* metric cards */
+    .metrics{grid-column:1 / -1;display:flex;gap:12px;flex-wrap:wrap}
+    .metric{flex:1 1 220px;padding:12px;border-radius:10px;display:flex;flex-direction:column;gap:6px}
+    .metric .label{font-size:13px;color:var(--muted)}
+    .metric .value{font-size:20px;font-weight:700}
+
+    /* layout for charts */
+    .chart-lg{grid-column:1 / span 8; height:320px}
+    .chart-md{grid-column:9 / span 4; height:320px}
+    .chart-row{grid-column:1 / -1;display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+    .w-6{grid-column:1 / span 6;height:260px}
+    .w-3{grid-column:7 / span 3;height:260px}
+    .w-3b{grid-column:10 / span 3;height:260px}
+
+    /* heatmap and table spans */
+    .heatmap-card{grid-column:1 / -1}
+    .table-card{grid-column:1 / -1}
+
+    /* table */
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th,td{padding:10px;border-bottom:1px solid rgba(0,0,0,0.06)}
+    th{position:sticky;top:0;background:var(--card);text-align:left}
+    .tag{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(99,102,241,0.12);color:var(--accent);font-weight:600;font-size:12px}
+
+    /* heat cells */
+    .heat-grid{display:flex;flex-direction:column;gap:6px}
+    .heat-row{display:flex;gap:6px;align-items:center}
+    .heat-label{width:140px;font-size:13px}
+    .heat-cell{flex:1;padding:8px;border-radius:8px;text-align:center;color:#0b1220;font-weight:600}
+
+    /* pagination */
+    .pagination{display:flex;gap:6px;align-items:center;justify-content:center;padding:12px}
+
+    @media (max-width:1000px){
+      .chart-lg{grid-column:1 / -1;height:300px}
+      .chart-md{grid-column:1 / -1;height:300px}
+      .w-6{grid-column:1 / -1}
+      .w-3{grid-column:1 / -1}
+      .w-3b{grid-column:1 / -1}
+      .heat-label{width:100px}
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="wrap">
+    <header>
+      <div class="title">
+        <div class="brand-icon">CB</div>
+        <div>
+          <h1>Cyberbullying Detection System</h1>
+          <div style="font-size:13px;color:var(--muted)">Real-time analytics & monitoring — Countries included</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <input type="file" id="csvFileInput" accept=".csv" />
+        <button id="toggleTheme" class="btn">Toggle Dark</button>
+        <button id="downloadBtn" class="btn">Download HTML</button>
+      </div>
+    </header>
+
+    <div class="filters">
+      <select id="fCountry"><option value="all">All Countries</option></select>
+      <select id="fYear"><option value="all">All Years</option></select>
+      <select id="fMonth"><option value="all">All Months</option></select>
+      <select id="fCity"><option value="all">All Cities</option></select>
+      <select id="fPlatform"><option value="all">All Platforms</option></select>
+      <select id="fGender"><option value="all">All Genders</option></select>
+      <select id="fType"><option value="all">All Types</option></select>
+      <input id="search" type="search" placeholder="Search comments, city, platform..." style="min-width:220px" />
+      <button id="reset" class="btn">Reset</button>
+    </div>
+
+    <div class="grid">
+      <!-- Metrics -->
+      <div class="metrics">
+        <div class="metric card">
+          <div class="label">Total Comments Analyzed</div>
+          <div class="value" id="metricTotal">0</div>
+        </div>
+        <div class="metric card">
+          <div class="label">Bullying Cases Detected</div>
+          <div class="value" id="metricBullying">0</div>
+        </div>
+        <div class="metric card">
+          <div class="label">Detection Rate</div>
+          <div class="value" id="metricRate">0%</div>
+        </div>
+        <div class="metric card">
+          <div class="label">Most Active Platform</div>
+          <div class="value" id="metricTop">-</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="card chart-lg"><canvas id="chartCity"></canvas></div>
+      <div class="card chart-md"><canvas id="chartTrend"></canvas></div>
+      <div class="chart-row" style="grid-column:1 / -1; margin-top:4px">
+        <div class="card w-6"><canvas id="chartType"></canvas></div>
+        <div class="card w-3"><canvas id="chartGender"></canvas></div>
+        <div class="card w-3b"><canvas id="chartPlatform"></canvas></div>
+      </div>
+
+      <!-- Heatmap -->
+      <div class="card heatmap-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div><strong>Monthly Bullying Frequency by Platform</strong></div>
+          <div style="color:var(--muted);font-size:13px">Rows: Platform • Columns: Month</div>
+        </div>
+        <div id="heat" class="heat-grid"></div>
+      </div>
+
+      <!-- Data table -->
+      <div class="card table-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <strong>Data Table</strong>
+          <div style="font-size:13px;color:var(--muted)">Showing results (client-side)</div>
+        </div>
+        <div style="overflow:auto">
+          <table id="table">
+            <thead>
+              <tr>
+                <th>Comment</th><th>Label</th><th>Type</th><th>Platform</th><th>Age</th><th>Gender</th><th>City</th><th>Country</th><th>Month</th><th>Year</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pager"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+let data = [];
+const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+let chartCity, chartTrend, chartType, chartGender, chartPlatform;
+let currentPage = 1, pageSize = 8;
+
+const getEl = id => document.getElementById(id);
+const unique = arr => [...new Set(arr)];
+
+function escapeHtml(str){ return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+function getCssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name) || name; }
+
+/* --------------------------
+   Populate Filters
+--------------------------- */
+function populateFilters(){
+  const countries = unique(data.map(d=>d.country)).sort();
+  const years = unique(data.map(d=>d.year)).sort();
+  const cities = unique(data.map(d=>d.city)).sort();
+  const platforms = unique(data.map(d=>d.platform)).sort();
+  const genders = unique(data.map(d=>d.gender)).sort();
+  const types = unique(data.map(d=>d.type)).sort();
+
+  getEl('fCountry').innerHTML = '<option value="all">All Countries</option>' + countries.map(c=>`<option value="${c}">${c}</option>`).join('');
+  getEl('fYear').innerHTML = '<option value="all">All Years</option>' + years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  getEl('fMonth').innerHTML = '<option value="all">All Months</option>' + months.map(m=>`<option value="${m}">${m}</option>`).join('');
+  getEl('fCity').innerHTML = '<option value="all">All Cities</option>' + cities.map(c=>`<option value="${c}">${c}</option>`).join('');
+  getEl('fPlatform').innerHTML = '<option value="all">All Platforms</option>' + platforms.map(p=>`<option value="${p}">${p}</option>`).join('');
+  getEl('fGender').innerHTML = '<option value="all">All Genders</option>' + genders.map(g=>`<option value="${g}">${g}</option>`).join('');
+  getEl('fType').innerHTML = '<option value="all">All Types</option>' + types.map(t=>`<option value="${t}">${t}</option>`).join('');
+}
+
+/* --------------------------
+   Filtered Data
+--------------------------- */
+function filteredData(){
+  const country = getEl('fCountry').value;
+  const year = getEl('fYear').value;
+  const month = getEl('fMonth').value;
+  const city = getEl('fCity').value;
+  const platform = getEl('fPlatform').value;
+  const gender = getEl('fGender').value;
+  const type = getEl('fType').value;
+  const q = getEl('search').value.trim().toLowerCase();
+
+  return data.filter(r=>{
+    if (country!=='all' && r.country!==country) return false;
+    if (year!=='all' && String(r.year)!==String(year)) return false;
+    if (month!=='all' && r.month!==month) return false;
+    if (city!=='all' && r.city!==city) return false;
+    if (platform!=='all' && r.platform!==platform) return false;
+    if (gender!=='all' && r.gender!==gender) return false;
+    if (type!=='all' && r.type!==type) return false;
+    if (q){
+      const hay = (r.comment+' '+r.city+' '+r.platform+' '+r.type+' '+r.country).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+/* --------------------------
+   Metrics
+--------------------------- */
+function updateMetrics(list){
+  getEl('metricTotal').innerText = list.length;
+  const bullyCount = list.filter(x=>x.label.toLowerCase()==='bullying').length;
+  getEl('metricBullying').innerText = bullyCount;
+  getEl('metricRate').innerText = list.length ? Math.round((bullyCount/list.length)*100)+'%' : '0%';
+  const platformCounts = {};
+  list.forEach(r=> platformCounts[r.platform] = (platformCounts[r.platform]||0)+1);
+  const top = Object.entries(platformCounts).sort((a,b)=>b[1]-a[1])[0];
+  getEl('metricTop').innerText = top ? top[0] : '-';
+}
+
+/* --------------------------
+   Charts, Heatmap, Table
+--------------------------- */
+function buildCharts(list){
+  // City
+  const cityCounts = {};
+  list.forEach(r=> { if (r.label.toLowerCase()==='bullying') cityCounts[r.city] = (cityCounts[r.city]||0)+1; });
+  const cityLabels = Object.keys(cityCounts);
+  const cityVals = cityLabels.map(l=>cityCounts[l]);
+  if (!chartCity) {
+    chartCity = new Chart(getEl('chartCity'), { type:'bar', data:{labels:cityLabels,datasets:[{label:'Bullying Cases',data:cityVals,backgroundColor:getCssVar('--accent')} ]}, options:{responsive:true, maintainAspectRatio:false, scales:{y:{beginAtZero:true}}} });
+  } else { chartCity.data.labels=cityLabels; chartCity.data.datasets[0].data=cityVals; chartCity.update(); }
+
+  // Trend
+  const trend = {}; months.forEach(m=>trend[m]=0);
+  list.forEach(r=> { if (r.label.toLowerCase()==='bullying') trend[r.month] = (trend[r.month]||0)+1; });
+  const trendVals = months.map(m=>trend[m]);
+  if (!chartTrend) {
+    chartTrend = new Chart(getEl('chartTrend'), { type:'line', data:{labels:months,datasets:[{label:'Bullying Trend', data:trendVals,tension:0.3,borderColor:getCssVar('--accent-3'),pointRadius:4,fill:false}]}, options:{responsive:true, maintainAspectRatio:false, scales:{y:{beginAtZero:true}}} });
+  } else { chartTrend.data.datasets[0].data=trendVals; chartTrend.update(); }
+
+  // Type
+  const typeCounts = {}; list.forEach(r=> typeCounts[r.type]=(typeCounts[r.type]||0)+1);
+  const typeLabels = Object.keys(typeCounts), typeVals = typeLabels.map(l=>typeCounts[l]);
+  const palette=['#ec4899','#a78bfa','#fb7185','#f59e0b','#06b6d4','#10b981'];
+  if(!chartType){ chartType=new Chart(getEl('chartType'),{type:'doughnut',data:{labels:typeLabels,datasets:[{data:typeVals,backgroundColor:palette}]},options:{responsive:true,maintainAspectRatio:false}});}
+  else {chartType.data.labels=typeLabels; chartType.data.datasets[0].data=typeVals; chartType.update();}
+
+  // Gender
+  const genderCounts={}; list.forEach(r=> genderCounts[r.gender]=(genderCounts[r.gender]||0)+1);
+  const gLabels=Object.keys(genderCounts), gVals=gLabels.map(l=>genderCounts[l]);
+  if(!chartGender){ chartGender=new Chart(getEl('chartGender'),{type:'pie',data:{labels:gLabels,datasets:[{data:gVals,backgroundColor:['#60a5fa','#fb7185','#34d399']}]},options:{responsive:true,maintainAspectRatio:false}});}
+  else {chartGender.data.labels=gLabels; chartGender.data.datasets[0].data=gVals; chartGender.update();}
+
+  // Platform
+  const platformCounts={}; list.forEach(r=> platformCounts[r.platform]=(platformCounts[r.platform]||0)+1);
+  const pLabels=Object.keys(platformCounts), pVals=pLabels.map(l=>platformCounts[l]);
+  if(!chartPlatform){ chartPlatform=new Chart(getEl('chartPlatform'),{type:'bar',data:{labels:pLabels,datasets:[{label:'Platform Cases',data:pVals,backgroundColor:'#8b5cf6'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,scales:{x:{beginAtZero:true}}}});}
+  else {chartPlatform.data.labels=pLabels; chartPlatform.data.datasets[0].data=pVals; chartPlatform.update();}
+}
+
+/* Heatmap */
+function buildHeatmap(list){
+  const platforms=unique(list.map(d=>d.platform)).sort();
+  const container=getEl('heat'); container.innerHTML='';
+  const headerRow=document.createElement('div'); headerRow.style.display='flex'; headerRow.style.gap='6px'; headerRow.style.marginBottom='6px';
+  const spacer=document.createElement('div'); spacer.style.width='140px'; headerRow.appendChild(spacer);
+  months.forEach(m=>{ const el=document.createElement('div'); el.style.flex='1'; el.style.textAlign='center'; el.style.fontSize='13px'; el.style.color='var(--muted)'; el.innerText=m; headerRow.appendChild(el); });
+  container.appendChild(headerRow);
+
+  platforms.forEach(p=>{
+    const row=document.createElement('div'); row.className='heat-row';
+    const lbl=document.createElement('div'); lbl.className='heat-label'; lbl.innerText=p; row.appendChild(lbl);
+    const countsPerMonth=months.map(m=>list.filter(r=>r.platform===p && r.month===m && r.label.toLowerCase()==='bullying').length);
+    const max=Math.max(...countsPerMonth,1);
+    countsPerMonth.forEach(c=>{
+      const cell=document.createElement('div'); cell.className='heat-cell';
+      if(c===0){cell.style.background='rgba(0,0,0,0.03)'; cell.style.color='var(--muted)';} 
+      else{ const alpha=0.35 + (c/max)*0.6; cell.style.background=`linear-gradient(135deg, rgba(139,92,246,${alpha}), rgba(99,102,241,${alpha}))`; cell.style.color='white'; }
+      cell.innerText=c; cell.style.flex='1'; cell.style.padding='6px'; cell.style.borderRadius='8px'; row.appendChild(cell);
+    });
+    container.appendChild(row);
+  });
+  if(!platforms.length) container.innerText='No data';
+}
+
+/* Table */
+function renderTable(list){
+  const tbody=getEl('table').querySelector('tbody'); tbody.innerHTML='';
+  const start=(currentPage-1)*pageSize;
+  const subset=list.slice(start,start+pageSize);
+  subset.forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td>${escapeHtml(r.comment)}</td>
+      <td><span class="tag" style="background:${r.label==='Bullying'?'rgba(239,68,68,0.12)':'rgba(16,185,129,0.12)'};color:${r.label==='Bullying'?'#ef4444':'#10b981'}">${r.label}</span></td>
+      <td>${r.type}</td><td>${r.platform}</td><td>${r.age}</td><td>${r.gender}</td><td>${r.city}</td><td>${r.country}</td><td>${r.month}</td><td>${r.year}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Pager
+  const pager=getEl('pager'); pager.innerHTML='';
+  const totalPages=Math.max(1,Math.ceil(list.length/pageSize));
+  const makeBtn=(text,disabled,cb)=>{ const b=document.createElement('button'); b.className='btn'; b.innerText=text; if(disabled)b.disabled=true; b.onclick=cb; return b; };
+  pager.appendChild(makeBtn('Prev',currentPage===1,()=>{if(currentPage>1){currentPage--; refresh();}}));
+  const startPage=Math.max(1,currentPage-2), endPage=Math.min(totalPages,currentPage+2);
+  for(let p=startPage;p<=endPage;p++){ const b=document.createElement('button'); b.className='btn'; b.innerText=p; if(p===currentPage){b.style.fontWeight='700';} b.onclick=()=>{currentPage=p; refresh();}; pager.appendChild(b);}
+  pager.appendChild(makeBtn('Next',currentPage===totalPages,()=>{if(currentPage<totalPages){currentPage++; refresh();}}));
+}
+
+/* --------------------------
+   Refresh Dashboard
+--------------------------- */
+function refresh(){
+  const list=filteredData();
+  updateMetrics(list);
+  buildCharts(list);
+  buildHeatmap(list);
+  renderTable(list);
+}
+
+/* --------------------------
+   Event Wiring
+--------------------------- */
+function wire(){
+  ['fCountry','fYear','fMonth','fCity','fPlatform','fGender','fType','search'].forEach(id=>{
+    const el=getEl(id);
+    el.addEventListener('change',()=>{currentPage=1; refresh();});
+    el.addEventListener('input',()=>{currentPage=1; refresh();});
+  });
+
+  getEl('reset').addEventListener('click',()=>{
+    getEl('fCountry').value='all'; getEl('fYear').value='all'; getEl('fMonth').value='all'; getEl('fCity').value='all';
+    getEl('fPlatform').value='all'; getEl('fGender').value='all'; getEl('fType').value='all'; getEl('search').value='';
+    currentPage=1; refresh();
+  });
+
+  getEl('toggleTheme').addEventListener('click',()=> document.body.classList.toggle('dark'));
+
+  getEl('csvFileInput').addEventListener('change', e=>{
+    const file=e.target.files[0];
+    if(!file) return;
+    Papa.parse(file,{header:true,skipEmptyLines:true,complete:function(results){
+      data=results.data.map(r=>({
+        comment:r.comment||'',
+        label:r.label||'',
+        type:r.type||'',
+        platform:r.platform||'',
+        age:r.age||'',
+        gender:r.gender||'',
+        city:r.city||'',
+        country:r.country||'',
+        month:r.month||'Jan',
+        year:r.year||'2025'
+      }));
+      populateFilters();
+      refresh();
+    }});
+  });
+
+  getEl('downloadBtn').addEventListener('click',()=>{
+    const blob = new Blob([document.documentElement.outerHTML], {type:'text/html'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='dashboard.html'; a.click();
+  });
+}
+
+/* --------------------------
+   Initialize with dummy
+--------------------------- */
+document.addEventListener('DOMContentLoaded',()=>{
+  wire();
+  // optional: load dummy CSV data here
+});
+</script>
+</body>
+</html>

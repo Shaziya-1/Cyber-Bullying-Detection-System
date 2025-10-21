@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cyberbullying Detection - Manual Detection</title>
+
+  <style>
+    /* ==========================
+       THEME VARIABLES
+    ========================== */
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #007acc;
+      --accent: #dc3545;
+      --nav-bg: #0f172a;
+      --header-text: #ffffff;
+      --btn-green: #28a745;
+    }
+    body.dark {
+      --bg: #0b0b0d;
+      --card: #111213;
+      --text: #e6eef2;
+      --muted: #9aa6b2;
+      --primary: #38bdf8;
+      --accent: #ff5c5c;
+      --nav-bg: #111827;
+      --header-text: #f8fafc;
+      --btn-green: #34c759;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ==========================
+       HEADER / NAVBAR
+    ========================== */
+    header.navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: var(--nav-bg);
+      color: var(--header-text);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 8px rgba(2,6,23,0.08);
+    }
+
+    .logo-combo { display: flex; align-items: center; gap: 10px; }
+    .logo {
+      width: 44px; height: 44px; border-radius: 8px;
+      background: var(--header-text);
+      color: var(--nav-bg);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+    }
+    .sys-title { font-size: 1.05rem; font-weight: 700; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-links a {
+      color: var(--header-text);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.3s;
+    }
+    .nav-links a.active,
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .toggle-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: var(--header-text);
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: scale(1.05);
+    }
+
+    /* ==========================
+       MAIN CONTAINER
+    ========================== */
+    main.page {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    textarea.form-control {
+      width: 100%;
+      min-height: 180px;
+      border-radius: 10px;
+      border: 2px solid rgba(0,0,0,0.08);
+      padding: 14px;
+      font-size: 1rem;
+      resize: vertical;
+      color: var(--text);
+      background: transparent;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    textarea.form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.15);
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-submit {
+      background: var(--btn-green);
+      color: white;
+    }
+    .btn-submit:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+    .btn-clear {
+      background: transparent;
+      border: 1px solid var(--muted);
+      color: var(--muted);
+    }
+    .btn-clear:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .result {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-align: center;
+      color: white;
+    }
+    .result.bullying { background: var(--accent); }
+    .result.non-bullying { background: var(--btn-green); }
+
+    .hint {
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+      header.navbar { padding: 12px; }
+      main.page { margin: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="navbar">
+    <div class="logo-combo">
+      <div class="logo">CB</div>
+      <div class="sys-title">Cyberbullying Detection System</div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="{{ url_for('index') }}" class="active">Manual Detection</a>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+    </nav>
+
+    <button class="toggle-btn" id="themeToggle" aria-label="Toggle dark mode">☀️</button>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="page">
+    <div class="card">
+      <div class="title">Cyberbullying Detection Using Python</div>
+
+      <form class="manual" method="POST" action="{{ url_for('index') }}">
+        <textarea name="text" class="form-control" placeholder="Enter text to analyze...">{{ request.form.get('text','') }}</textarea>
+
+        <div class="controls">
+          <button type="submit" class="btn btn-submit">Analyze</button>
+          <button type="button" class="btn btn-clear" id="clearBtn">Clear</button>
+        </div>
+
+        {% if prediction is not none %}
+          <div class="result {% if prediction == 1 %}bullying{% else %}non-bullying{% endif %}">
+            {% if prediction == 1 %}Bullying{% else %}Non-Bullying{% endif %}
+          </div>
+        {% endif %}
+
+        <div class="hint">
+          Tip: Try sentences like "You are so dumb" or "Have a nice day" to see how the model categorizes them.
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- THEME + CLEAR BUTTON SCRIPT -->
+  <script>
+    (function() {
+      const toggleBtn = document.getElementById('themeToggle');
+      const clearBtn = document.getElementById('clearBtn');
+      const textarea = document.querySelector('.form-control');
+
+      // Load saved theme or system preference
+      const savedTheme = localStorage.getItem('cb_theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+        toggleBtn.textContent = '🌙';
+      } else if (savedTheme === 'light') {
+        document.body.classList.remove('dark');
+        toggleBtn.textContent = '☀️';
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) {
+          document.body.classList.add('dark');
+          toggleBtn.textContent = '🌙';
+          localStorage.setItem('cb_theme', 'dark');
+        }
+      }
+
+      // Toggle theme
+      toggleBtn.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark');
+        toggleBtn.textContent = isDark ? '🌙' : '☀️';
+        localStorage.setItem('cb_theme', isDark ? 'dark' : 'light');
+      });
+
+      // Clear textarea
+      clearBtn.addEventListener('click', () => {
+        textarea.value = '';
+        textarea.focus();
+      });
+    })();
+  </script>
+</body>
+</html>

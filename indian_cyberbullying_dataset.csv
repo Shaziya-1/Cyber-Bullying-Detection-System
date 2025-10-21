@@ -1,0 +1,101 @@
+comment_id,comment_text,label,toxicity_level,language,platform,category
+1,"Tu kitna mota ho gaya hai, gym jaa na!",1,0.6,English,Instagram,Insult
+2,"Nice post bhai, keep it up!",0,0,English,Twitter,Non-toxic
+3,Yeh ladki toh bilkul besharam hai.,1,0.8,Hindi,YouTube,Hate Speech
+4,Teri shakal dekh ke toh darr lagta hai.,1,0.7,English,Facebook,Insult
+5,"Amazing work, really inspiring!",0,0,English,Instagram,Non-toxic
+6,"Sale, tu kahan se aaya itna paisa?",1,0.9,Hindi,Twitter,Insult
+7,"Bohot sundar pic, looking great!",0,0,English,Instagram,Non-toxic
+8,Tum log toh desh ke dushman ho.,1,0.9,Hindi,YouTube,Hate Speech
+9,"Chal nikal, yahan teri aukaat nahi.",1,0.8,English,Twitter,Threat
+10,"Loved your video, keep making more!",0,0,English,YouTube,Non-toxic
+11,Pagalpan ki bhi hadd hoti hai!,1,0.7,Hindi,Facebook,Insult
+12,"Bhai, ye design toh ekdum mast hai!",0,0,English,Instagram,Non-toxic
+13,Tum jaise logon ki wajah se country badnaam hai.,1,0.9,Hindi,Twitter,Hate Speech
+14,"You’re such a loser, get a life!",1,0.8,English,Instagram,Insult
+15,"Wow, this is so creative, great job!",0,0,English,YouTube,Non-toxic
+16,Kutte ki tarah kyun bolta hai?,1,0.9,Hindi,Facebook,Insult
+17,"Bohot acha content, keep it up!",0,0,English,YouTube,Non-toxic
+18,Teri family ko main dekh lunga.,1,0.95,Hindi,Twitter,Threat
+19,"Such a beautiful voice, loved it!",0,0,English,Instagram,Non-toxic
+20,"Yeh toh pura fake hai, band kar do!",1,0.7,English,YouTube,Insult
+21,Tum toh bilkul bekaar ho!,1,0.8,Hindi,Facebook,Insult
+22,"Superb editing, really impressive!",0,0,English,YouTube,Non-toxic
+23,Isko toh koi akal hi nahi hai.,1,0.7,Hindi,Twitter,Insult
+24,"Bhai, ye toh next level hai!",0,0,English,Instagram,Non-toxic
+25,Tum jaise logon ko jail mein hona chahiye.,1,0.9,Hindi,Facebook,Hate Speech
+26,"Your content is so relatable, awesome!",0,0,English,YouTube,Non-toxic
+27,"Chup kar, koi tujhe nahi sunega.",1,0.8,English,Twitter,Insult
+28,"This is so cool, loved the vibe!",0,0,English,Instagram,Non-toxic
+29,"Tere jaisa koi nahi, itna ganda!",1,0.9,Hindi,YouTube,Insult
+30,"Amazing talent, keep shining!",0,0,English,Twitter,Non-toxic
+31,"Saale, tujhe toh main thok dunga.",1,0.95,Hindi,Facebook,Threat
+32,"Bohot badhiya, dil se dil tak!",0,0,English,Instagram,Non-toxic
+33,Yeh log toh bas bakwas karte hain.,1,0.7,Hindi,YouTube,Hate Speech
+34,"You’re killing it, awesome work!",0,0,English,Twitter,Non-toxic
+35,Teri aukaat kya hai bolne ki?,1,0.8,English,Facebook,Insult
+36,Loved the way you presented this!,0,0,English,YouTube,Non-toxic
+37,Isko toh sabak sikhana padega.,1,0.9,Hindi,Twitter,Threat
+38,"Bhai, ye toh ekdum solid hai!",0,0,English,Instagram,Non-toxic
+39,Tum toh pura desh badnaam kar rahe ho.,1,0.9,Hindi,Facebook,Hate Speech
+40,"This is so inspiring, great job!",0,0,English,YouTube,Non-toxic
+41,Koi sharam nahi hai tujhme?,1,0.8,Hindi,Twitter,Insult
+42,Your posts always make my day!,0,0,English,Instagram,Non-toxic
+43,Tujhe toh koi dekhta bhi nahi!,1,0.7,English,YouTube,Insult
+44,"Bohot acha kaam, keep it up!",0,0,English,Facebook,Non-toxic
+45,Yeh toh bilkul bakwas hai.,1,0.7,Hindi,Twitter,Insult
+46,Loved your energy in this video!,0,0,English,YouTube,Non-toxic
+47,Tere muh se kuch acha nahi nikalta.,1,0.8,Hindi,Facebook,Insult
+48,"This is so well done, amazing!",0,0,English,Instagram,Non-toxic
+49,Tum logon ko koi manners nahi hai.,1,0.8,Hindi,Twitter,Hate Speech
+50,"Bhai, ye toh dil se dil tak!",0,0,English,YouTube,Non-toxic
+51,Tujhe toh main dekh lunga!,1,0.95,Hindi,Facebook,Threat
+52,Your creativity is on another level!,0,0,English,Instagram,Non-toxic
+53,Yeh toh pura scam lagta hai.,1,0.7,English,YouTube,Insult
+54,"Amazing effort, really inspiring!",0,0,English,Twitter,Non-toxic
+55,Tum jaise log hi problem hain.,1,0.9,Hindi,Facebook,Hate Speech
+56,"Bohot sundar, keep shining!",0,0,English,Instagram,Non-toxic
+57,Teri toh koi value hi nahi hai.,1,0.8,Hindi,Twitter,Insult
+58,"This is so cool, great work!",0,0,English,YouTube,Non-toxic
+59,"Chal, nikal yahan se!",1,0.8,English,Facebook,Threat
+60,Your posts are always so good!,0,0,English,Instagram,Non-toxic
+61,Tum toh bilkul useless ho.,1,0.8,Hindi,Twitter,Insult
+62,"Bhai, ye toh ekdum mast hai!",0,0,English,YouTube,Non-toxic
+63,Yeh log toh bas drama karte hain.,1,0.7,Hindi,Facebook,Hate Speech
+64,Loved the vibe of this post!,0,0,English,Twitter,Non-toxic
+65,Tujhe koi respect nahi deta.,1,0.8,Hindi,YouTube,Insult
+66,"This is so creative, awesome!",0,0,English,Instagram,Non-toxic
+67,"Tere jaisa koi nahi, itna bura!",1,0.9,Hindi,Twitter,Insult
+68,"Bohot badhiya content, keep it up!",0,0,English,YouTube,Non-toxic
+69,Tum toh pura desh barbaad kar doge.,1,0.9,Hindi,Facebook,Hate Speech
+70,Your work is truly inspiring!,0,0,English,Instagram,Non-toxic
+71,Koi akal hai ya nahi tujhme?,1,0.8,Hindi,Twitter,Insult
+72,"This is so well executed, wow!",0,0,English,YouTube,Non-toxic
+73,Tujhe toh koi seriously nahi lega.,1,0.7,English,Facebook,Insult
+74,"Bhai, ye toh next level hai!",0,0,English,Instagram,Non-toxic
+75,Yeh toh bilkul nonsense hai.,1,0.7,Hindi,Twitter,Insult
+76,"Loved your latest post, amazing!",0,0,English,YouTube,Non-toxic
+77,Tum jaise logon se nafrat hai.,1,0.9,Hindi,Facebook,Hate Speech
+78,"This is so cool, keep it up!",0,0,English,Instagram,Non-toxic
+79,Teri toh koi aukaat nahi hai.,1,0.8,English,Twitter,Insult
+80,"Bohot sundar, really impressive!",0,0,English,YouTube,Non-toxic
+81,Yeh toh pura fake lagta hai!,1,0.7,Hindi,Instagram,Insult
+82,"Your talent is unreal, great job!",0,0,English,Twitter,Non-toxic
+83,Tujhe toh koi pasand nahi karta.,1,0.8,Hindi,Facebook,Insult
+84,"Bhai, ye toh dil se dil tak!",0,0,English,YouTube,Non-toxic
+85,Tum log toh bas bakwas karte ho.,1,0.8,Hindi,Twitter,Hate Speech
+86,"This is so inspiring, keep it up!",0,0,English,Instagram,Non-toxic
+87,Tere jaisa koi itna bura nahi!,1,0.9,Hindi,Facebook,Insult
+88,Loved the creativity in this!,0,0,English,YouTube,Non-toxic
+89,"Chal, yahan se hatt!",1,0.8,English,Twitter,Threat
+90,"Bohot acha kaam, keep shining!",0,0,English,Instagram,Non-toxic
+91,Tum toh bilkul bekaar ho.,1,0.8,Hindi,Facebook,Insult
+92,"This is so well done, awesome!",0,0,English,YouTube,Non-toxic
+93,Yeh log toh pura desh badnaam karte hain.,1,0.9,Hindi,Twitter,Hate Speech
+94,Your posts are always amazing!,0,0,English,Instagram,Non-toxic
+95,Tujhe toh koi sunta hi nahi.,1,0.7,Hindi,Facebook,Insult
+96,"Bhai, ye toh ekdum solid hai!",0,0,English,YouTube,Non-toxic
+97,Tum jaise log hi problem hain.,1,0.9,Hindi,Twitter,Hate Speech
+98,"This is so creative, great job!",0,0,English,Instagram,Non-toxic
+99,Teri toh koi value hi nahi!,1,0.8,English,Facebook,Insult
+100,"Bohot badhiya, keep it up!",0,0,English,YouTube,Non-toxic
