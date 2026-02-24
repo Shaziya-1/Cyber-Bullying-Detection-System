@@ -36,10 +36,10 @@ Open http://127.0.0.1:5000
 
 ## 📸 Screenshots
 <div align="center">
-  <img src="images/manual-detection.png" width="800"/>
-  <img src="images/dashboard-overview.png" width="800"/>
-  <img src="images/analytics-dashboard.png" width="800"/>
-  <img src="images/data-table.png" width="800"/>
+  <img src="./manual-detection.png" width="800"/>
+  <img src="./dashboard-overview.png" width="800"/>
+  <img src="./analytics-dashboard.png" width="800"/>
+  <img src="./data-table.png" width="800"/>
 </div>
 
 ---
