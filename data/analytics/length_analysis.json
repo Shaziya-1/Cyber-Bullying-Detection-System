@@ -1,0 +1,38 @@
+{
+  "stats": {
+    "min_length": 1,
+    "max_length": 1906,
+    "avg_length": 297.23,
+    "stddev_length": 269.2
+  },
+  "groups": [
+    {
+      "length_group": "Short (<50 chars)",
+      "total_count": 195083,
+      "toxic_count": 13096,
+      "toxicity_rate_pct": 6.71,
+      "avg_toxicity": 0.0777
+    },
+    {
+      "length_group": "Medium (50-200 chars)",
+      "total_count": 702924,
+      "toxic_count": 60619,
+      "toxicity_rate_pct": 8.62,
+      "avg_toxicity": 0.1054
+    },
+    {
+      "length_group": "Long (200-500 chars)",
+      "total_count": 556149,
+      "toxic_count": 47425,
+      "toxicity_rate_pct": 8.53,
+      "avg_toxicity": 0.1103
+    },
+    {
+      "length_group": "Very Long (>500 chars)",
+      "total_count": 350718,
+      "toxic_count": 23194,
+      "toxicity_rate_pct": 6.61,
+      "avg_toxicity": 0.1008
+    }
+  ]
+}

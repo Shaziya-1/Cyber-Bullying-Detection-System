@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}Cyberbullying Detection System{% endblock %}</title>
+  
+  <style>
+    /* Global CSS Variables for Light/Dark mode */
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #0ea5e9;
+      --primary-hover: #0284c7;
+      --accent-danger: #ef4444;
+      --accent-success: #10b981;
+      --nav-bg: #1e293b;
+      --nav-text: #f8fafc;
+      --nav-hover: rgba(255, 255, 255, 0.1);
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    body.dark {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0ea5e9;
+      --accent-danger: #f87171;
+      --accent-success: #34d399;
+      --nav-bg: #0b1120;
+      --nav-text: #f8fafc;
+      --nav-hover: rgba(255, 255, 255, 0.1);
+      --border: #334155;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Global Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: var(--nav-bg);
+      color: var(--nav-text);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--nav-text);
+    }
+    
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), #3b82f6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: white;
+    }
+    
+    .sys-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+    }
+    
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .nav-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+    }
+    
+    .nav-links a:hover, .nav-links a.active {
+      background: var(--nav-hover);
+    }
+    
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .btn-toggle-theme {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--nav-text);
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      transition: 0.2s;
+    }
+    
+    .btn-toggle-theme:hover {
+      background: var(--nav-hover);
+    }
+
+    .btn-exit {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    .btn-exit:hover {
+      background: rgba(239, 68, 68, 0.25);
+      color: #fecaca;
+    }
+    
+    /* Mobile nav toggle */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--nav-text);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+    }
+    
+    @media (max-width: 850px) {
+      .nav-links {
+        display: none;
+      }
+      .mobile-menu-btn { display: block; }
+      .nav-links.show {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--nav-bg);
+        padding: 16px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+      .nav-links.show a { width: 100%; text-align: center; }
+    }
+    
+    {% block extra_css %}{% endblock %}
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <a href="{{ url_for('index') }}" class="navbar-brand">
+      <div class="logo-icon">CB</div>
+      <div class="sys-title">Cyberbullying Detection System</div>
+    </a>
+    
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
+      <a href="{{ url_for('manual') }}" class="{% if request.endpoint == 'manual' %}active{% endif %}">Analyze</a>
+      <a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}">Dashboard</a>
+      <a href="{{ url_for('big_data') }}" class="{% if request.endpoint == 'big_data' %}active{% endif %}">Big Data</a>
+      <a href="{{ url_for('moderation') }}" class="{% if request.endpoint == 'moderation' %}active{% endif %}">Moderation</a>
+      <a href="{{ url_for('simulation') }}" class="{% if request.endpoint == 'simulation' %}active{% endif %}">Simulation</a>
+    </nav>
+    
+    <div class="nav-actions">
+      <button class="btn-toggle-theme" id="themeToggle" aria-label="Toggle dark mode">
+        ☀️
+      </button>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <script>
+    (function(){
+      const toggleBtn = document.getElementById('themeToggle');
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const navLinks = document.getElementById('navLinks');
+      
+      mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+      });
+
+      function updateThemeIcon(isDark) {
+        toggleBtn.innerHTML = isDark ? '☀️' : '🌙';
+        toggleBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+      }
+
+      const saved = localStorage.getItem('cb_global_theme');
+      if(saved === 'dark') {
+        document.body.classList.add('dark');
+        updateThemeIcon(true);
+      } else if (saved === 'light') {
+        document.body.classList.remove('dark');
+        updateThemeIcon(false);
+      } else {
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if(prefersDark){
+          document.body.classList.add('dark');
+          updateThemeIcon(true);
+          localStorage.setItem('cb_global_theme','dark');
+        } else {
+          updateThemeIcon(false);
+          localStorage.setItem('cb_global_theme','light');
+        }
+      }
+
+      toggleBtn.addEventListener('click', function(){
+        const isDark = document.body.classList.toggle('dark');
+        updateThemeIcon(isDark);
+        localStorage.setItem('cb_global_theme', isDark ? 'dark' : 'light');
+        
+        window.dispatchEvent(new CustomEvent('themeChanged', { detail: { isDark } }));
+      });
+    })();
+  </script>
+  
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

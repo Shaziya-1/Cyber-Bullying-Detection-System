@@ -1,0 +1,44 @@
+[
+  {
+    "avg_score": 0.0812,
+    "count": 106534,
+    "rate_pct": 5.9,
+    "subtype": "Insult",
+    "rank": 1
+  },
+  {
+    "avg_score": 0.0226,
+    "count": 13410,
+    "rate_pct": 0.74,
+    "subtype": "Identity Attack",
+    "rank": 2
+  },
+  {
+    "avg_score": 0.0139,
+    "count": 9603,
+    "rate_pct": 0.53,
+    "subtype": "Obscene",
+    "rank": 3
+  },
+  {
+    "avg_score": 0.0066,
+    "count": 4686,
+    "rate_pct": 0.26,
+    "subtype": "Sexual Explicit",
+    "rank": 4
+  },
+  {
+    "avg_score": 0.0093,
+    "count": 4280,
+    "rate_pct": 0.24,
+    "subtype": "Threat",
+    "rank": 5
+  },
+  {
+    "avg_score": 0.0046,
+    "count": 13,
+    "rate_pct": 0.0,
+    "subtype": "Severe Toxicity",
+    "rank": 6
+  }
+]

@@ -1,0 +1,182 @@
+[
+  {
+    "publication_id": "54",
+    "total_comments": 627278,
+    "toxic_comments": 46062,
+    "toxicity_rate_pct": 7.34,
+    "avg_toxicity": 0.098,
+    "volume_rank": 1,
+    "toxicity_rank": 14
+  },
+  {
+    "publication_id": "21",
+    "total_comments": 377686,
+    "toxic_comments": 34308,
+    "toxicity_rate_pct": 9.08,
+    "avg_toxicity": 0.1108,
+    "volume_rank": 2,
+    "toxicity_rank": 7
+  },
+  {
+    "publication_id": "102",
+    "total_comments": 213846,
+    "toxic_comments": 19433,
+    "toxicity_rate_pct": 9.09,
+    "avg_toxicity": 0.1119,
+    "volume_rank": 3,
+    "toxicity_rank": 6
+  },
+  {
+    "publication_id": "13",
+    "total_comments": 156682,
+    "toxic_comments": 11786,
+    "toxicity_rate_pct": 7.52,
+    "avg_toxicity": 0.0991,
+    "volume_rank": 4,
+    "toxicity_rank": 13
+  },
+  {
+    "publication_id": "55",
+    "total_comments": 133464,
+    "toxic_comments": 11862,
+    "toxicity_rate_pct": 8.89,
+    "avg_toxicity": 0.1086,
+    "volume_rank": 5,
+    "toxicity_rank": 8
+  },
+  {
+    "publication_id": "53",
+    "total_comments": 129243,
+    "toxic_comments": 6526,
+    "toxicity_rate_pct": 5.05,
+    "avg_toxicity": 0.0839,
+    "volume_rank": 6,
+    "toxicity_rank": 23
+  },
+  {
+    "publication_id": "22",
+    "total_comments": 54767,
+    "toxic_comments": 2649,
+    "toxicity_rate_pct": 4.84,
+    "avg_toxicity": 0.073,
+    "volume_rank": 7,
+    "toxicity_rank": 25
+  },
+  {
+    "publication_id": "105",
+    "total_comments": 38934,
+    "toxic_comments": 6351,
+    "toxicity_rate_pct": 16.31,
+    "avg_toxicity": 0.1755,
+    "volume_rank": 8,
+    "toxicity_rank": 3
+  },
+  {
+    "publication_id": "100",
+    "total_comments": 23441,
+    "toxic_comments": 2034,
+    "toxicity_rate_pct": 8.68,
+    "avg_toxicity": 0.1132,
+    "volume_rank": 9,
+    "toxicity_rank": 10
+  },
+  {
+    "publication_id": "43",
+    "total_comments": 10952,
+    "toxic_comments": 933,
+    "toxicity_rate_pct": 8.52,
+    "avg_toxicity": 0.1032,
+    "volume_rank": 10,
+    "toxicity_rank": 12
+  },
+  {
+    "publication_id": "6",
+    "total_comments": 10824,
+    "toxic_comments": 948,
+    "toxicity_rate_pct": 8.76,
+    "avg_toxicity": 0.1036,
+    "volume_rank": 11,
+    "toxicity_rank": 9
+  },
+  {
+    "publication_id": "66",
+    "total_comments": 8095,
+    "toxic_comments": 441,
+    "toxicity_rate_pct": 5.45,
+    "avg_toxicity": 0.085,
+    "volume_rank": 12,
+    "toxicity_rank": 17
+  },
+  {
+    "publication_id": "93",
+    "total_comments": 3597,
+    "toxic_comments": 137,
+    "toxicity_rate_pct": 3.81,
+    "avg_toxicity": 0.055,
+    "volume_rank": 13,
+    "toxicity_rank": 32
+  },
+  {
+    "publication_id": "52",
+    "total_comments": 2323,
+    "toxic_comments": 34,
+    "toxicity_rate_pct": 1.46,
+    "avg_toxicity": 0.0511,
+    "volume_rank": 14,
+    "toxicity_rank": 46
+  },
+  {
+    "publication_id": "87",
+    "total_comments": 1692,
+    "toxic_comments": 77,
+    "toxicity_rate_pct": 4.55,
+    "avg_toxicity": 0.0656,
+    "volume_rank": 15,
+    "toxicity_rank": 28
+  },
+  {
+    "publication_id": "73",
+    "total_comments": 1651,
+    "toxic_comments": 53,
+    "toxicity_rate_pct": 3.21,
+    "avg_toxicity": 0.056,
+    "volume_rank": 16,
+    "toxicity_rank": 35
+  },
+  {
+    "publication_id": "84",
+    "total_comments": 1444,
+    "toxic_comments": 146,
+    "toxicity_rate_pct": 10.11,
+    "avg_toxicity": 0.1175,
+    "volume_rank": 17,
+    "toxicity_rank": 5
+  },
+  {
+    "publication_id": "46",
+    "total_comments": 1271,
+    "toxic_comments": 92,
+    "toxicity_rate_pct": 7.24,
+    "avg_toxicity": 0.0852,
+    "volume_rank": 18,
+    "toxicity_rank": 15
+  },
+  {
+    "publication_id": "67",
+    "total_comments": 1122,
+    "toxic_comments": 59,
+    "toxicity_rate_pct": 5.26,
+    "avg_toxicity": 0.0751,
+    "volume_rank": 19,
+    "toxicity_rank": 20
+  },
+  {
+    "publication_id": "85",
+    "total_comments": 621,
+    "toxic_comments": 140,
+    "toxicity_rate_pct": 22.54,
+    "avg_toxicity": 0.2164,
+    "volume_rank": 20,
+    "toxicity_rank": 2
+  }
+]

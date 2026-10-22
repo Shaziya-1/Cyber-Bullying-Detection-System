@@ -1,0 +1,1111 @@
+{% extends "base.html" %}
+
+{% block title %}Big Data Analytics - PySpark Distributed Engine{% endblock %}
+
+{% block extra_css %}
+  :root {
+    --bd-primary: #0284c7;
+    --bd-danger: #ef4444;
+    --bd-warning: #f59e0b;
+    --bd-success: #10b981;
+    --bd-purple: #8b5cf6;
+    --bd-indigo: #6366f1;
+    --bd-card-bg: var(--card);
+  }
+
+  .bd-wrap {
+    max-width: 1400px;
+    margin: 24px auto;
+    padding: 0 24px 60px 24px;
+  }
+
+  /* Header Section */
+  .bd-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bd-title h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .spark-badge {
+    background: linear-gradient(135deg, #e25a1f, #f97316);
+    color: white;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .bd-subtitle {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-top: 6px;
+    max-width: 800px;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-refresh {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .btn-refresh:hover {
+    background: var(--border);
+    transform: translateY(-1px);
+  }
+
+  /* Section Title */
+  .section-header {
+    margin: 32px 0 16px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-tag {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--border);
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* KPI Grid */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-card {
+    background: var(--bd-card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.12);
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--card-accent, var(--primary));
+  }
+
+  .kpi-card.toxic { --card-accent: var(--bd-danger); }
+  .kpi-card.safe { --card-accent: var(--bd-success); }
+  .kpi-card.warning { --card-accent: var(--bd-warning); }
+  .kpi-card.purple { --card-accent: var(--bd-purple); }
+  .kpi-card.indigo { --card-accent: var(--bd-indigo); }
+  .kpi-card.primary { --card-accent: var(--bd-primary); }
+
+  .kpi-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .kpi-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .kpi-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .kpi-sub .pct {
+    font-weight: 700;
+  }
+  .kpi-sub .pct.danger { color: var(--bd-danger); }
+  .kpi-sub .pct.success { color: var(--bd-success); }
+
+  /* Charts Grid */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .chart-card {
+    background: var(--bd-card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .chart-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .chart-card-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .chart-canvas-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    min-height: 280px;
+  }
+
+  /* Data Table */
+  .table-card {
+    background: var(--bd-card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-top: 12px;
+  }
+
+  .custom-table th, .custom-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+
+  .custom-table th {
+    font-weight: 600;
+    color: var(--muted);
+    background: rgba(0,0,0,0.02);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  body.dark .custom-table th {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .custom-table tr:hover td {
+    background: rgba(0, 0, 0, 0.015);
+  }
+  body.dark .custom-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--text);
+    font-weight: 700;
+    font-size: 0.75rem;
+  }
+  .rank-1 { background: #fbbf24; color: #78350f; }
+  .rank-2 { background: #cbd5e1; color: #334155; }
+  .rank-3 { background: #f97316; color: white; }
+
+  /* Benchmark Spec Grid */
+  .spec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .spec-item {
+    background: rgba(0,0,0,0.02);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  body.dark .spec-item {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .spec-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .spec-val {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 4px;
+  }
+
+  /* Arch diagram container */
+  .arch-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 16px 8px;
+  }
+
+  .arch-node {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    text-align: center;
+    min-width: 140px;
+    box-shadow: var(--shadow);
+    border-top: 3px solid var(--bd-primary);
+  }
+
+  .arch-node .node-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .arch-node .node-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .arch-arrow {
+    color: var(--muted);
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  @media (max-width: 1024px) {
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endblock %}
+
+{% block content %}
+<div class="bd-wrap">
+
+  <!-- Header -->
+  <div class="bd-header">
+    <div class="bd-title-block">
+      <div class="bd-title">
+        <span>Civil Comments Big Data Analytics Engine</span>
+        <span class="spark-badge">Apache PySpark {{ overview.spark_version }}</span>
+      </div>
+      <div class="bd-subtitle">
+        Distributed metrics computed from the 1.8M+ Civil Comments dataset using PySpark DataFrame APIs, Spark SQL Engine, Window Analytics, and Snappy Parquet storage.
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="{{ url_for('big_data') }}" class="btn-refresh">
+        <span>🔄</span> Refresh View
+      </a>
+      <a href="{{ url_for('dashboard') }}" class="btn-refresh">
+        <span>📊</span> Operational Dashboard
+      </a>
+    </div>
+  </div>
+
+  <!-- SECTION 1: EXECUTIVE KPI SUMMARY -->
+  <div class="section-header">
+    <div class="section-title">
+      <span>1. Ingestion & Toxicity Summary KPIs</span>
+    </div>
+    <span class="section-tag">{{ "{:,}".format(overview.total_records) }} Real Records Ingested</span>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card primary">
+      <div class="kpi-label">Total Comments Ingested</div>
+      <div class="kpi-value">{{ "{:,}".format(overview.total_records) }}</div>
+      <div class="kpi-sub">Civil Comments Real Corpus</div>
+    </div>
+    <div class="kpi-card toxic">
+      <div class="kpi-label">Toxic Comments</div>
+      <div class="kpi-value">{{ "{:,}".format(overview.toxic_records) }}</div>
+      <div class="kpi-sub"><span class="pct danger">{{ overview.toxic_percentage }}%</span> of corpus (score &ge; 0.5)</div>
+    </div>
+    <div class="kpi-card safe">
+      <div class="kpi-label">Non-Toxic Comments</div>
+      <div class="kpi-value">{{ "{:,}".format(overview.non_toxic_records) }}</div>
+      <div class="kpi-sub"><span class="pct success">{{ overview.non_toxic_percentage }}%</span> of corpus (score &lt; 0.5)</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-label">Avg Toxicity Score</div>
+      <div class="kpi-value">{{ overview.avg_toxicity }}</div>
+      <div class="kpi-sub">Scale: 0.000 to 1.000</div>
+    </div>
+  </div>
+
+  <!-- Subtypes KPI Grid -->
+  <div class="kpi-grid">
+    <div class="kpi-card purple">
+      <div class="kpi-label">Insults (#1)</div>
+      <div class="kpi-value">{{ "{:,}".format(subtypes.insult.count if subtypes.insult else 106534) }}</div>
+      <div class="kpi-sub">{{ subtypes.insult.rate_pct if subtypes.insult else 5.9 }}% prevalence rate</div>
+    </div>
+    <div class="kpi-card indigo">
+      <div class="kpi-label">Identity Attacks</div>
+      <div class="kpi-value">{{ "{:,}".format(subtypes.identity_attack.count if subtypes.identity_attack else 13410) }}</div>
+      <div class="kpi-sub">{{ subtypes.identity_attack.rate_pct if subtypes.identity_attack else 0.74 }}% prevalence rate</div>
+    </div>
+    <div class="kpi-card warning">
+      <div class="kpi-label">Obscenity</div>
+      <div class="kpi-value">{{ "{:,}".format(subtypes.obscene.count if subtypes.obscene else 9603) }}</div>
+      <div class="kpi-sub">{{ subtypes.obscene.rate_pct if subtypes.obscene else 0.53 }}% prevalence rate</div>
+    </div>
+    <div class="kpi-card toxic">
+      <div class="kpi-label">Threats</div>
+      <div class="kpi-value">{{ "{:,}".format(subtypes.threat.count if subtypes.threat else 4280) }}</div>
+      <div class="kpi-sub">{{ subtypes.threat.rate_pct if subtypes.threat else 0.24 }}% prevalence rate</div>
+    </div>
+    <div class="kpi-card toxic">
+      <div class="kpi-label">Severe Toxicity</div>
+      <div class="kpi-value">{{ "{:,}".format(subtypes.severe_toxicity.count if subtypes.severe_toxicity else 13) }}</div>
+      <div class="kpi-sub">Score &ge; 0.5</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: PYSPARK PERFORMANCE BENCHMARKS & STORAGE FOOTPRINT -->
+  <div class="section-header">
+    <div class="section-title">
+      <span>2. Distributed Pipeline Performance & Parquet Storage</span>
+    </div>
+    <span class="section-tag">Empirical Wall-Clock Timings</span>
+  </div>
+
+  <div class="grid-2">
+    <!-- Benchmark Table -->
+    <div class="table-card" style="margin-bottom:0;">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">PySpark Pipeline Execution Stages</div>
+          <div class="chart-card-desc">End-to-end distributed execution benchmarks across 1.8M+ rows</div>
+        </div>
+      </div>
+      <div class="spec-grid">
+        <div class="spec-item">
+          <div class="spec-label">Total Duration</div>
+          <div class="spec-val" style="color:var(--bd-primary);">{{ total_pipeline_time }}s</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Throughput</div>
+          <div class="spec-val">{{ "{:,}".format(overall_throughput) }} <span style="font-size:0.75rem; color:var(--muted)">rec/s</span></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">CSV Size</div>
+          <div class="spec-val">{{ overview.csv_size_mb }} MB</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Parquet Size</div>
+          <div class="spec-val" style="color:var(--bd-success);">{{ overview.parquet_size_mb }} MB</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Compression</div>
+          <div class="spec-val" style="color:var(--bd-success);">{{ overview.compression_ratio }}x</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Space Saved</div>
+          <div class="spec-val" style="color:var(--bd-success);">{{ overview.space_saved_percentage }}%</div>
+        </div>
+      </div>
+
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Input Rows</th>
+            <th>Execution Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for op in operations %}
+          <tr>
+            <td><strong>{{ op.operation }}</strong></td>
+            <td>{{ "{:,}".format(op.input_records) }}</td>
+            <td style="font-weight:700;">{{ op.execution_time_sec }}s</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Benchmark Chart -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">Stage Execution Time Distribution</div>
+          <div class="chart-card-desc">Computational breakdown per pipeline phase (seconds)</div>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="benchmarkChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 & 4: SCORE DISTRIBUTION & SUBTYPES -->
+  <div class="section-header">
+    <div class="section-title">
+      <span>3. Toxicity Score & Subtype Breakdown</span>
+    </div>
+    <span class="section-tag">PySpark Spark SQL Aggregations</span>
+  </div>
+
+  <div class="grid-2">
+    <!-- Toxicity Score Distribution Bar Chart -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">Toxicity Score Bin Distribution</div>
+          <div class="chart-card-desc">Frequency distribution across score deciles [0.0 - 1.0]</div>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="scoreDistChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Toxicity Subtypes Horizontal Bar Chart -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">Toxicity Subtypes Breakdown</div>
+          <div class="chart-card-desc">Prevalence of specific toxicity categories (threshold &ge; 0.5)</div>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="subtypesChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 & 6: COMMENT LENGTH & TEMPORAL TRENDS -->
+  <div class="section-header">
+    <div class="section-title">
+      <span>4. Behavioral Patterns & Temporal Evolution</span>
+    </div>
+    <span class="section-tag">Comment Length & Monthly Trends</span>
+  </div>
+
+  <div class="grid-2">
+    <!-- Comment Length Analysis -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">Toxicity by Comment Character Length</div>
+          <div class="chart-card-desc">Correlation between comment length and toxicity rate</div>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="lengthChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Temporal Trends Line Chart -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">Temporal Monthly Toxicity Trend (2015 - 2018)</div>
+          <div class="chart-card-desc">Monthly volume vs monthly toxicity rate percentage</div>
+        </div>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="temporalChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: SPARK WINDOW FUNCTIONS - PUBLICATION RANKINGS -->
+  <div class="section-header">
+    <div class="section-title">
+      <span>5. Publication Analytics via Spark Window Functions</span>
+    </div>
+    <span class="section-tag">OVER (ORDER BY volume DESC) with DENSE_RANK()</span>
+  </div>
+
+  <div class="table-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">Top Publications Ranked by Total Volume and Toxicity</div>
+        <div class="chart-card-desc">Computed using PySpark Window specifications over {{ "{:,}".format(overview.total_records) }} records</div>
+      </div>
+    </div>
+    <div class="table-wrapper" style="overflow-x:auto;">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Volume Rank</th>
+            <th>Publication ID</th>
+            <th>Total Comments</th>
+            <th>Toxic Comments</th>
+            <th>Toxicity Rate</th>
+            <th>Avg Toxicity Score</th>
+            <th>Toxicity Rank</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pub in publication_analysis[:12] %}
+          <tr>
+            <td>
+              <span class="rank-badge {% if pub.volume_rank == 1 %}rank-1{% elif pub.volume_rank == 2 %}rank-2{% elif pub.volume_rank == 3 %}rank-3{% endif %}">
+                {{ pub.volume_rank }}
+              </span>
+            </td>
+            <td><strong>Publication #{{ pub.publication_id }}</strong></td>
+            <td>{{ "{:,}".format(pub.total_comments) }}</td>
+            <td style="color:var(--bd-danger); font-weight:700;">{{ "{:,}".format(pub.toxic_comments) }}</td>
+            <td>
+              <span class="tag {% if pub.toxicity_rate_pct > 10.0 %}bullying{% else %}safe{% endif %}">
+                {{ pub.toxicity_rate_pct }}%
+              </span>
+            </td>
+            <td>{{ pub.avg_toxicity }}</td>
+            <td><strong>#{{ pub.toxicity_rank }}</strong></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 8: ARCHITECTURE & ENGINE SPECIFICATIONS -->
+  <div class="section-header">
+    <div class="section-title">
+      <span>6. Big Data Architecture & Distributed Cluster Specs</span>
+    </div>
+    <span class="section-tag">Production Infrastructure</span>
+  </div>
+
+  <div class="table-card">
+    <div class="arch-diagram">
+      <div class="arch-node">
+        <div class="node-title">📄 CSV Raw Data</div>
+        <div class="node-sub">1.80M Rows (~816 MB)</div>
+      </div>
+      <div class="arch-arrow">&rarr;</div>
+      <div class="arch-node">
+        <div class="node-title">⚡ PySpark Ingestion</div>
+        <div class="node-sub">Distributed Schema Enforcement</div>
+      </div>
+      <div class="arch-arrow">&rarr;</div>
+      <div class="arch-node">
+        <div class="node-title">🧹 Data Quality Filter</div>
+        <div class="node-sub">Null Audit & Type Casting</div>
+      </div>
+      <div class="arch-arrow">&rarr;</div>
+      <div class="arch-node">
+        <div class="node-title">🧠 Spark SQL & Window</div>
+        <div class="node-sub">Catalyst In-Memory Aggregations</div>
+      </div>
+      <div class="arch-arrow">&rarr;</div>
+      <div class="arch-node">
+        <div class="node-title">💾 Snappy Parquet</div>
+        <div class="node-sub">Partitioned by Year (41.8 MB)</div>
+      </div>
+      <div class="arch-arrow">&rarr;</div>
+      <div class="arch-node">
+        <div class="node-title">🚀 Flask Dashboard</div>
+        <div class="node-sub">Sub-millisecond Precomputed UI</div>
+      </div>
+    </div>
+
+    <div class="spec-grid" style="margin-top:20px;">
+      <div class="spec-item">
+        <div class="spec-label">Apache Spark Engine</div>
+        <div class="spec-val">v{{ overview.spark_version }}</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Java Virtual Machine</div>
+        <div class="spec-val">OpenJDK {{ overview.java_version }}</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Spark Master Mode</div>
+        <div class="spec-val">local[*]</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Driver Memory Allocated</div>
+        <div class="spec-val">4 GB</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Parquet Compression</div>
+        <div class="spec-val">SNAPPY</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Partitioning Key</div>
+        <div class="spec-val">Year (2015-2018)</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Chart.js 4.4.0 UMD -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+  (function() {
+    let chartBench = null;
+    let chartScore = null;
+    let chartSub = null;
+    let chartLen = null;
+    let chartTemp = null;
+
+    const timings = {{ timings | tojson }};
+    const operations = {{ operations | tojson }};
+    const scoreDist = {{ score_distribution | tojson }};
+    const subtypesList = {{ subtypes_list | tojson }};
+    const lengthGroups = {{ length_groups | tojson }};
+    const tempMonths = {{ temporal_trends.monthly | tojson }};
+
+    function initCharts() {
+      if (typeof Chart === 'undefined') {
+        console.error('Chart.js library is not loaded.');
+        return;
+      }
+
+      const isDark = document.body.classList.contains('dark');
+      const textColor = isDark ? '#94a3b8' : '#64748b';
+      const gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+
+      // 1. Benchmark Execution Stage Chart
+      const elBench = document.getElementById('benchmarkChart');
+      if (elBench) {
+        if (chartBench) { chartBench.destroy(); }
+        const benchLabels = (operations && operations.length > 0)
+          ? operations.map(op => op.operation.replace(/\s*\([^)]*\)/g, ''))
+          : ['CSV Ingestion', 'Data Cleaning', 'Feature Eng.', 'Spark SQL', 'Window Funcs', 'Parquet Write', 'Parquet Read'];
+        const benchData = (operations && operations.length > 0)
+          ? operations.map(op => op.execution_time_sec)
+          : [
+              timings.csv_read_time || 18.17,
+              timings.cleaning_time || 104.59,
+              timings.transformation_time || 52.00,
+              timings.spark_sql_time || 10.96,
+              timings.window_analytics_time || 21.77,
+              timings.parquet_write_time || 24.85,
+              timings.parquet_read_time || 1.02
+            ];
+
+        chartBench = new Chart(elBench.getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: benchLabels,
+            datasets: [{
+              label: 'Execution Time (s)',
+              data: benchData,
+              backgroundColor: [
+                '#38bdf8',
+                '#818cf8',
+                '#6366f1',
+                '#a78bfa',
+                '#f472b6',
+                '#fb923c',
+                '#34d399'
+              ],
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    return `Execution Time: ${ctx.raw}s`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: gridColor },
+                ticks: { color: textColor, font: { size: 11 } }
+              },
+              y: {
+                grid: { color: gridColor },
+                ticks: { color: textColor },
+                title: { display: true, text: 'Seconds', color: textColor }
+              }
+            }
+          }
+        });
+      }
+
+      // 2. Score Distribution Chart
+      const elScore = document.getElementById('scoreDistChart');
+      if (elScore && scoreDist && scoreDist.length > 0) {
+        if (chartScore) { chartScore.destroy(); }
+        chartScore = new Chart(elScore.getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: scoreDist.map(d => d.score_bin),
+            datasets: [{
+              label: 'Comment Count',
+              data: scoreDist.map(d => d.comment_count),
+              backgroundColor: scoreDist.map((d, i) => {
+                if (i === 0) return '#10b981';
+                if (i <= 2) return '#38bdf8';
+                if (i <= 4) return '#fbbf24';
+                return '#ef4444';
+              }),
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    const item = scoreDist[ctx.dataIndex];
+                    return `${item.comment_count.toLocaleString()} comments (${item.percentage}%)`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: gridColor },
+                ticks: { color: textColor, font: { size: 11 } }
+              },
+              y: {
+                grid: { color: gridColor },
+                ticks: {
+                  color: textColor,
+                  callback: function(val) {
+                    return val >= 1000000 ? (val / 1000000).toFixed(1) + 'M' : (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
+                  }
+                },
+                title: { display: true, text: 'Comments', color: textColor }
+              }
+            }
+          }
+        });
+      }
+
+      // 3. Subtypes Breakdown Chart
+      const elSub = document.getElementById('subtypesChart');
+      if (elSub && subtypesList && subtypesList.length > 0) {
+        if (chartSub) { chartSub.destroy(); }
+        chartSub = new Chart(elSub.getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: subtypesList.map(d => d.subtype),
+            datasets: [{
+              label: 'Comment Count (Score >= 0.5)',
+              data: subtypesList.map(d => d.count),
+              backgroundColor: [
+                '#a78bfa',
+                '#6366f1',
+                '#f59e0b',
+                '#38bdf8',
+                '#ef4444',
+                '#dc2626'
+              ],
+              borderRadius: 6
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    const item = subtypesList[ctx.dataIndex];
+                    return `${item.count.toLocaleString()} comments (${item.rate_pct}% prevalence)`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: gridColor },
+                ticks: {
+                  color: textColor,
+                  callback: function(val) {
+                    return val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val;
+                  }
+                },
+                title: { display: true, text: 'Severe Toxic Comments (Count)', color: textColor }
+              },
+              y: {
+                grid: { color: gridColor },
+                ticks: { color: textColor, font: { size: 12, weight: 'bold' } }
+              }
+            }
+          }
+        });
+      }
+
+      // 4. Length Group Chart
+      const elLen = document.getElementById('lengthChart');
+      if (elLen && lengthGroups && lengthGroups.length > 0) {
+        if (chartLen) { chartLen.destroy(); }
+        chartLen = new Chart(elLen.getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: lengthGroups.map(d => d.length_group),
+            datasets: [
+              {
+                type: 'bar',
+                label: 'Total Comments',
+                data: lengthGroups.map(d => d.total_count),
+                backgroundColor: 'rgba(56, 189, 248, 0.45)',
+                borderColor: '#38bdf8',
+                borderWidth: 1.5,
+                borderRadius: 6,
+                yAxisID: 'y'
+              },
+              {
+                type: 'line',
+                label: 'Toxicity Rate (%)',
+                data: lengthGroups.map(d => d.toxicity_rate_pct),
+                borderColor: '#ef4444',
+                backgroundColor: '#ef4444',
+                borderWidth: 3,
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                yAxisID: 'y1'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: { color: textColor, font: { size: 11 } }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    if (ctx.datasetIndex === 0) {
+                      return `Total Comments: ${ctx.raw.toLocaleString()}`;
+                    } else {
+                      return `Toxicity Rate: ${ctx.raw}%`;
+                    }
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: gridColor },
+                ticks: { color: textColor, font: { size: 11 } }
+              },
+              y: {
+                position: 'left',
+                grid: { color: gridColor },
+                ticks: {
+                  color: textColor,
+                  callback: function(val) {
+                    return val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val;
+                  }
+                },
+                title: { display: true, text: 'Total Comments', color: textColor }
+              },
+              y1: {
+                position: 'right',
+                grid: { drawOnChartArea: false },
+                ticks: {
+                  color: '#ef4444',
+                  callback: function(val) { return val + '%'; }
+                },
+                title: { display: true, text: 'Toxicity Rate (%)', color: '#ef4444' }
+              }
+            }
+          }
+        });
+      }
+
+      // 5. Temporal Trends Chart
+      const elTemp = document.getElementById('temporalChart');
+      if (elTemp && tempMonths && tempMonths.length > 0) {
+        if (chartTemp) { chartTemp.destroy(); }
+        chartTemp = new Chart(elTemp.getContext('2d'), {
+          type: 'line',
+          data: {
+            labels: tempMonths.map(d => d.year_month),
+            datasets: [
+              {
+                label: 'Toxicity Rate (%)',
+                data: tempMonths.map(d => d.toxicity_rate_pct),
+                borderColor: '#ef4444',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                fill: true,
+                tension: 0.3,
+                pointRadius: 3,
+                pointHoverRadius: 6,
+                yAxisID: 'y'
+              },
+              {
+                label: 'Total Comments Ingested',
+                data: tempMonths.map(d => d.total_comments),
+                borderColor: '#0284c7',
+                backgroundColor: 'transparent',
+                borderDash: [4, 4],
+                tension: 0.3,
+                pointRadius: 3,
+                pointHoverRadius: 6,
+                yAxisID: 'y1'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: { color: textColor, font: { size: 11 } }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    if (ctx.datasetIndex === 0) {
+                      return `Toxicity Rate: ${ctx.raw}%`;
+                    } else {
+                      return `Total Comments: ${ctx.raw.toLocaleString()}`;
+                    }
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: gridColor },
+                ticks: { color: textColor, maxTicksLimit: 12, font: { size: 10 } }
+              },
+              y: {
+                position: 'left',
+                grid: { color: gridColor },
+                ticks: {
+                  color: '#ef4444',
+                  callback: function(val) { return val + '%'; }
+                },
+                title: { display: true, text: 'Toxicity Rate (%)', color: '#ef4444' }
+              },
+              y1: {
+                position: 'right',
+                grid: { drawOnChartArea: false },
+                ticks: {
+                  color: '#0284c7',
+                  callback: function(val) {
+                    return val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val;
+                  }
+                },
+                title: { display: true, text: 'Total Volume', color: '#0284c7' }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCharts);
+    } else {
+      initCharts();
+    }
+
+    // Redraw charts cleanly on theme change
+    window.addEventListener('themeChanged', function() {
+      initCharts();
+    });
+  })();
+</script>
+{% endblock %}

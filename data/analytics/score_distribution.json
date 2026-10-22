@@ -1,0 +1,52 @@
+[
+  {
+    "score_bin": "[0.0 - 0.1)",
+    "comment_count": 1266229,
+    "percentage": 70.16
+  },
+  {
+    "score_bin": "[0.1 - 0.2)",
+    "comment_count": 160959,
+    "percentage": 8.92
+  },
+  {
+    "score_bin": "[0.2 - 0.3)",
+    "comment_count": 111597,
+    "percentage": 6.18
+  },
+  {
+    "score_bin": "[0.3 - 0.4)",
+    "comment_count": 64613,
+    "percentage": 3.58
+  },
+  {
+    "score_bin": "[0.4 - 0.5)",
+    "comment_count": 57142,
+    "percentage": 3.17
+  },
+  {
+    "score_bin": "[0.5 - 0.6)",
+    "comment_count": 47924,
+    "percentage": 2.66
+  },
+  {
+    "score_bin": "[0.6 - 0.7)",
+    "comment_count": 37736,
+    "percentage": 2.09
+  },
+  {
+    "score_bin": "[0.7 - 0.8)",
+    "comment_count": 27843,
+    "percentage": 1.54
+  },
+  {
+    "score_bin": "[0.8 - 0.9)",
+    "comment_count": 21605,
+    "percentage": 1.2
+  },
+  {
+    "score_bin": "[0.9 - 1.0]",
+    "comment_count": 9226,
+    "percentage": 0.51
+  }
+]

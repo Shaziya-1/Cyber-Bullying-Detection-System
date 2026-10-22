@@ -1,0 +1,18 @@
+{
+  "total_records": 1804874,
+  "toxic_records": 144334,
+  "non_toxic_records": 1660540,
+  "toxicity_rate_pct": 8.0,
+  "avg_toxicity_score": 0.103,
+  "min_toxicity_score": 0.0,
+  "max_toxicity_score": 1.0,
+  "raw_input_records": 1804874,
+  "invalid_records_dropped": 0,
+  "duplicate_comments": 24051,
+  "csv_size_mb": 778.4,
+  "parquet_size_mb": 41.83,
+  "compression_ratio": 18.61,
+  "generated_at": "2026-09-16 14:42:50",
+  "spark_version": "4.2.0",
+  "java_version": "21.0.12"
+}

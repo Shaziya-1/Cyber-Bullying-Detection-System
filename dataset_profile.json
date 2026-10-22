@@ -1,0 +1,78 @@
+{
+    "dataset.csv": {
+        "rows": 18149,
+        "columns": [
+            "headline",
+            "label"
+        ],
+        "missing": {
+            "headline": 0,
+            "label": 0
+        },
+        "duplicates": 1079,
+        "labels": {
+            "-1": 11662,
+            "0": 6487
+        }
+    },
+    "cyberbullying_data.csv": {
+        "rows": 20,
+        "columns": [
+            "id",
+            "comment",
+            "country",
+            "platform",
+            "gender",
+            "age_group",
+            "year",
+            "is_bullying"
+        ],
+        "missing": {
+            "id": 0,
+            "comment": 0,
+            "country": 0,
+            "platform": 0,
+            "gender": 0,
+            "age_group": 0,
+            "year": 0,
+            "is_bullying": 0
+        },
+        "duplicates": 0,
+        "labels": {
+            "1": 10,
+            "0": 10
+        }
+    },
+    "cyberbullying_dummy_dataset.csv": {
+        "rows": 1000,
+        "columns": [
+            "comment",
+            "label",
+            "type",
+            "platform",
+            "age",
+            "gender",
+            "city",
+            "country",
+            "month",
+            "year"
+        ],
+        "missing": {
+            "comment": 0,
+            "label": 0,
+            "type": 0,
+            "platform": 0,
+            "age": 0,
+            "gender": 0,
+            "city": 0,
+            "country": 0,
+            "month": 0,
+            "year": 0
+        },
+        "duplicates": 0,
+        "labels": {
+            "Not Bullying": 535,
+            "Bullying": 465
+        }
+    }
+}

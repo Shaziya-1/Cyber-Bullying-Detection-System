@@ -1,291 +1,217 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cyberbullying Detection - Manual Detection</title>
+{% extends "base.html" %}
 
-  <style>
-    /* ==========================
-       THEME VARIABLES
-    ========================== */
-    :root {
-      --bg: #f6f7fb;
-      --card: #ffffff;
-      --text: #111827;
-      --muted: #6b7280;
-      --primary: #007acc;
-      --accent: #dc3545;
-      --nav-bg: #0f172a;
-      --header-text: #ffffff;
-      --btn-green: #28a745;
-    }
-    body.dark {
-      --bg: #0b0b0d;
-      --card: #111213;
-      --text: #e6eef2;
-      --muted: #9aa6b2;
-      --primary: #38bdf8;
-      --accent: #ff5c5c;
-      --nav-bg: #111827;
-      --header-text: #f8fafc;
-      --btn-green: #34c759;
-    }
+{% block title %}Cyberbullying Detection & Prevention Platform{% endblock %}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
-    body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.45;
-      transition: background 0.3s, color 0.3s;
-    }
+{% block extra_css %}
+.hero {
+  text-align: center;
+  padding: 100px 20px 80px 20px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 2.8rem;
+  color: var(--text);
+  margin-bottom: 20px;
+  font-weight: 800;
+  max-width: 900px;
+}
+.hero p {
+  font-size: 1.15rem;
+  color: var(--muted);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
 
-    /* ==========================
-       HEADER / NAVBAR
-    ========================== */
-    header.navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 20px;
-      background: var(--nav-bg);
-      color: var(--header-text);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      box-shadow: 0 2px 8px rgba(2,6,23,0.08);
-    }
+.section-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
 
-    .logo-combo { display: flex; align-items: center; gap: 10px; }
-    .logo {
-      width: 44px; height: 44px; border-radius: 8px;
-      background: var(--header-text);
-      color: var(--nav-bg);
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700;
-    }
-    .sys-title { font-size: 1.05rem; font-weight: 700; }
+.nav-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+@media (max-width: 1000px) {
+  .nav-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .nav-cards {
+    grid-template-columns: 1fr;
+  }
+}
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .nav-links a {
-      color: var(--header-text);
-      text-decoration: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: background 0.3s;
-    }
-    .nav-links a.active,
-    .nav-links a:hover {
-      background: rgba(255, 255, 255, 0.12);
-    }
+.nav-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+}
+body.dark .nav-card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.nav-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+}
+body.dark .nav-card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+}
+.nav-card h3 {
+  margin: 0 0 16px 0;
+  color: var(--text);
+  font-size: 1.3rem;
+  font-weight: 700;
+  width: 100%;
+}
+.nav-card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
 
-    .toggle-btn {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: var(--header-text);
-      padding: 8px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1.05rem;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .toggle-btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      transform: scale(1.05);
-    }
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
 
-    /* ==========================
-       MAIN CONTAINER
-    ========================== */
-    main.page {
-      max-width: 960px;
-      margin: 40px auto;
-      padding: 20px;
-    }
-    .card {
-      background: var(--card);
-      border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-      transition: background 0.3s, box-shadow 0.3s;
-    }
+.monitoring-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  width: 100%;
+  box-sizing: border-box;
+}
+body.dark .monitoring-card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+{% endblock %}
 
-    .title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--primary);
-      text-align: center;
-      margin-bottom: 16px;
-    }
+{% block content %}
+<div class="hero">
+  <h1>Cyberbullying Detection & Prevention Platform</h1>
+  <p>An advanced system leveraging machine learning to identify, analyze, and manage harmful content across digital platforms.</p>
+</div>
 
-    textarea.form-control {
-      width: 100%;
-      min-height: 180px;
-      border-radius: 10px;
-      border: 2px solid rgba(0,0,0,0.08);
-      padding: 14px;
-      font-size: 1rem;
-      resize: vertical;
-      color: var(--text);
-      background: transparent;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    textarea.form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.15);
-    }
-
-    .controls {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      margin-top: 12px;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 18px;
-      border-radius: 10px;
-      border: none;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-    .btn-submit {
-      background: var(--btn-green);
-      color: white;
-    }
-    .btn-submit:hover {
-      opacity: 0.9;
-      transform: scale(1.02);
-    }
-    .btn-clear {
-      background: transparent;
-      border: 1px solid var(--muted);
-      color: var(--muted);
-    }
-    .btn-clear:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    .result {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 10px;
-      font-weight: 700;
-      text-align: center;
-      color: white;
-    }
-    .result.bullying { background: var(--accent); }
-    .result.non-bullying { background: var(--btn-green); }
-
-    .hint {
-      font-size: 0.9rem;
-      color: var(--muted);
-      text-align: center;
-      margin-top: 12px;
-    }
-
-    @media (max-width: 720px) {
-      .nav-links { display: none; }
-      header.navbar { padding: 12px; }
-      main.page { margin: 20px; }
-    }
-  </style>
-</head>
-
-<body>
-  <!-- HEADER -->
-  <header class="navbar">
-    <div class="logo-combo">
-      <div class="logo">CB</div>
-      <div class="sys-title">Cyberbullying Detection System</div>
+<div class="section-container">
+  <div class="nav-cards">
+    <div class="nav-card">
+      <h3>Analyze</h3>
+      <p>Analyze a comment for cyberbullying risk.</p>
+      <a href="{{ url_for('manual') }}" class="btn btn-primary">Go to Analyze</a>
     </div>
-
-    <nav class="nav-links">
-      <a href="{{ url_for('index') }}" class="active">Manual Detection</a>
-      <a href="{{ url_for('dashboard') }}">Dashboard</a>
-      <a href="{{ url_for('about') }}">About</a>
-      <a href="{{ url_for('contact') }}">Contact</a>
-    </nav>
-
-    <button class="toggle-btn" id="themeToggle" aria-label="Toggle dark mode">☀️</button>
-  </header>
-
-  <!-- MAIN CONTENT -->
-  <main class="page">
-    <div class="card">
-      <div class="title">Cyberbullying Detection Using Python</div>
-
-      <form class="manual" method="POST" action="{{ url_for('index') }}">
-        <textarea name="text" class="form-control" placeholder="Enter text to analyze...">{{ request.form.get('text','') }}</textarea>
-
-        <div class="controls">
-          <button type="submit" class="btn btn-submit">Analyze</button>
-          <button type="button" class="btn btn-clear" id="clearBtn">Clear</button>
-        </div>
-
-        {% if prediction is not none %}
-          <div class="result {% if prediction == 1 %}bullying{% else %}non-bullying{% endif %}">
-            {% if prediction == 1 %}Bullying{% else %}Non-Bullying{% endif %}
-          </div>
-        {% endif %}
-
-        <div class="hint">
-          Tip: Try sentences like "You are so dumb" or "Have a nice day" to see how the model categorizes them.
-        </div>
-      </form>
+    <div class="nav-card">
+      <h3>Dashboard</h3>
+      <p>View analytics, trends and monitoring insights.</p>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-primary">View Dashboard</a>
     </div>
-  </main>
+    <div class="nav-card">
+      <h3>Moderation</h3>
+      <p>Review and manage detected cases.</p>
+      <a href="{{ url_for('moderation') }}" class="btn btn-primary">Open Moderation</a>
+    </div>
+    <div class="nav-card">
+      <h3>Simulation</h3>
+      <p>Run an offline monitoring simulation.</p>
+      <a href="{{ url_for('simulation') }}" class="btn btn-primary">Open Simulation</a>
+    </div>
+  </div>
 
-  <!-- THEME + CLEAR BUTTON SCRIPT -->
-  <script>
-    (function() {
-      const toggleBtn = document.getElementById('themeToggle');
-      const clearBtn = document.getElementById('clearBtn');
-      const textarea = document.querySelector('.form-control');
+  <div class="monitoring-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+      <h3 style="margin:0; color:var(--text); font-size: 1.15rem; font-weight: 700;">Recent Monitoring Activity</h3>
+      <div style="font-size:0.9rem; color:var(--muted); font-weight: 600;">Total Cases: <strong id="homeTotalCases" style="color:var(--primary)">0</strong></div>
+    </div>
+    <div id="homeRecentList" style="display:flex; flex-direction:column; gap:10px;">
+      <div style="text-align:center; color:var(--muted); font-size:0.9rem; padding: 20px 0;">Loading recent activity...</div>
+    </div>
+  </div>
+</div>
+{% endblock %}
 
-      // Load saved theme or system preference
-      const savedTheme = localStorage.getItem('cb_theme');
-      if (savedTheme === 'dark') {
-        document.body.classList.add('dark');
-        toggleBtn.textContent = '🌙';
-      } else if (savedTheme === 'light') {
-        document.body.classList.remove('dark');
-        toggleBtn.textContent = '☀️';
-      } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (prefersDark) {
-          document.body.classList.add('dark');
-          toggleBtn.textContent = '🌙';
-          localStorage.setItem('cb_theme', 'dark');
-        }
+{% block extra_js %}
+<script>
+  async function loadHomeStats() {
+    try {
+      const res = await fetch('/api/stats');
+      const data = await res.json();
+      document.getElementById('homeTotalCases').innerText = data.total_cases;
+      
+      const list = document.getElementById('homeRecentList');
+      if(data.recent_cases.length === 0) {
+        list.innerHTML = '<div style="text-align:center; color:var(--muted); font-size:0.9rem;">No recent monitoring activity.</div>';
+        return;
       }
-
-      // Toggle theme
-      toggleBtn.addEventListener('click', () => {
-        const isDark = document.body.classList.toggle('dark');
-        toggleBtn.textContent = isDark ? '🌙' : '☀️';
-        localStorage.setItem('cb_theme', isDark ? 'dark' : 'light');
+      
+      let html = '';
+      data.recent_cases.forEach(c => {
+        const safeComment = String(c.comment).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+        const isDark = document.body.classList.contains('dark');
+        const bg = isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)';
+        html += `
+          <div style="padding:12px; background:${bg}; border:1px solid var(--border); border-radius:8px; border-left:3px solid var(--accent-danger);">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.8rem; color:var(--muted);">
+              <span>Case #${c.id} • ${c.severity} Severity</span>
+              <span>${c.created_at}</span>
+            </div>
+            <div style="color:var(--text); font-size:0.95rem;">"${safeComment}"</div>
+          </div>
+        `;
       });
+      list.innerHTML = html;
+    } catch(err) {
+      console.error(err);
+    }
+  }
 
-      // Clear textarea
-      clearBtn.addEventListener('click', () => {
-        textarea.value = '';
-        textarea.focus();
-      });
-    })();
-  </script>
-</body>
-</html>
+  document.addEventListener('DOMContentLoaded', () => {
+    loadHomeStats();
+    setInterval(loadHomeStats, 5000);
+  });
+</script>
+{% endblock %}

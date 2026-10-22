@@ -1,0 +1,435 @@
+{
+  "yearly": [
+    {
+      "year": 2015,
+      "total_comments": 651,
+      "toxic_comments": 34,
+      "toxicity_rate_pct": 5.22,
+      "avg_toxicity": 0.0606
+    },
+    {
+      "year": 2016,
+      "total_comments": 433256,
+      "toxic_comments": 34402,
+      "toxicity_rate_pct": 7.94,
+      "avg_toxicity": 0.1017
+    },
+    {
+      "year": 2017,
+      "total_comments": 1370967,
+      "toxic_comments": 109898,
+      "toxicity_rate_pct": 8.02,
+      "avg_toxicity": 0.1035
+    }
+  ],
+  "monthly": [
+    {
+      "year_month": "2015-09",
+      "total_comments": 324,
+      "toxic_comments": 18,
+      "toxicity_rate_pct": 5.56,
+      "avg_toxicity": 0.0643
+    },
+    {
+      "year_month": "2015-10",
+      "total_comments": 260,
+      "toxic_comments": 16,
+      "toxicity_rate_pct": 6.15,
+      "avg_toxicity": 0.0673
+    },
+    {
+      "year_month": "2015-11",
+      "total_comments": 31,
+      "toxic_comments": 0,
+      "toxicity_rate_pct": 0.0,
+      "avg_toxicity": 0.0
+    },
+    {
+      "year_month": "2015-12",
+      "total_comments": 36,
+      "toxic_comments": 0,
+      "toxicity_rate_pct": 0.0,
+      "avg_toxicity": 0.0315
+    },
+    {
+      "year_month": "2016-01",
+      "total_comments": 807,
+      "toxic_comments": 50,
+      "toxicity_rate_pct": 6.2,
+      "avg_toxicity": 0.0762
+    },
+    {
+      "year_month": "2016-02",
+      "total_comments": 3778,
+      "toxic_comments": 157,
+      "toxicity_rate_pct": 4.16,
+      "avg_toxicity": 0.0678
+    },
+    {
+      "year_month": "2016-03",
+      "total_comments": 14045,
+      "toxic_comments": 918,
+      "toxicity_rate_pct": 6.54,
+      "avg_toxicity": 0.0878
+    },
+    {
+      "year_month": "2016-04",
+      "total_comments": 28239,
+      "toxic_comments": 2015,
+      "toxicity_rate_pct": 7.14,
+      "avg_toxicity": 0.0898
+    },
+    {
+      "year_month": "2016-05",
+      "total_comments": 27331,
+      "toxic_comments": 1882,
+      "toxicity_rate_pct": 6.89,
+      "avg_toxicity": 0.0899
+    },
+    {
+      "year_month": "2016-06",
+      "total_comments": 30445,
+      "toxic_comments": 2276,
+      "toxicity_rate_pct": 7.48,
+      "avg_toxicity": 0.0984
+    },
+    {
+      "year_month": "2016-07",
+      "total_comments": 32694,
+      "toxic_comments": 2663,
+      "toxicity_rate_pct": 8.15,
+      "avg_toxicity": 0.1033
+    },
+    {
+      "year_month": "2016-08",
+      "total_comments": 36341,
+      "toxic_comments": 3125,
+      "toxicity_rate_pct": 8.6,
+      "avg_toxicity": 0.1071
+    },
+    {
+      "year_month": "2016-09",
+      "total_comments": 35844,
+      "toxic_comments": 3092,
+      "toxicity_rate_pct": 8.63,
+      "avg_toxicity": 0.1058
+    },
+    {
+      "year_month": "2016-10",
+      "total_comments": 53057,
+      "toxic_comments": 4295,
+      "toxicity_rate_pct": 8.1,
+      "avg_toxicity": 0.1041
+    },
+    {
+      "year_month": "2016-11",
+      "total_comments": 61916,
+      "toxic_comments": 5077,
+      "toxicity_rate_pct": 8.2,
+      "avg_toxicity": 0.1064
+    },
+    {
+      "year_month": "2016-12",
+      "total_comments": 108759,
+      "toxic_comments": 8852,
+      "toxicity_rate_pct": 8.14,
+      "avg_toxicity": 0.1042
+    },
+    {
+      "year_month": "2017-01",
+      "total_comments": 126229,
+      "toxic_comments": 10529,
+      "toxicity_rate_pct": 8.34,
+      "avg_toxicity": 0.1058
+    },
+    {
+      "year_month": "2017-02",
+      "total_comments": 106038,
+      "toxic_comments": 8055,
+      "toxicity_rate_pct": 7.6,
+      "avg_toxicity": 0.1013
+    },
+    {
+      "year_month": "2017-03",
+      "total_comments": 116462,
+      "toxic_comments": 8259,
+      "toxicity_rate_pct": 7.09,
+      "avg_toxicity": 0.0957
+    },
+    {
+      "year_month": "2017-04",
+      "total_comments": 98224,
+      "toxic_comments": 7301,
+      "toxicity_rate_pct": 7.43,
+      "avg_toxicity": 0.0967
+    },
+    {
+      "year_month": "2017-05",
+      "total_comments": 114301,
+      "toxic_comments": 8730,
+      "toxicity_rate_pct": 7.64,
+      "avg_toxicity": 0.0991
+    },
+    {
+      "year_month": "2017-06",
+      "total_comments": 142729,
+      "toxic_comments": 11012,
+      "toxicity_rate_pct": 7.72,
+      "avg_toxicity": 0.1005
+    },
+    {
+      "year_month": "2017-07",
+      "total_comments": 152169,
+      "toxic_comments": 11844,
+      "toxicity_rate_pct": 7.78,
+      "avg_toxicity": 0.1008
+    },
+    {
+      "year_month": "2017-08",
+      "total_comments": 146302,
+      "toxic_comments": 12985,
+      "toxicity_rate_pct": 8.88,
+      "avg_toxicity": 0.1127
+    },
+    {
+      "year_month": "2017-09",
+      "total_comments": 145804,
+      "toxic_comments": 12074,
+      "toxicity_rate_pct": 8.28,
+      "avg_toxicity": 0.1056
+    },
+    {
+      "year_month": "2017-10",
+      "total_comments": 161904,
+      "toxic_comments": 14062,
+      "toxicity_rate_pct": 8.69,
+      "avg_toxicity": 0.1097
+    },
+    {
+      "year_month": "2017-11",
+      "total_comments": 60805,
+      "toxic_comments": 5047,
+      "toxicity_rate_pct": 8.3,
+      "avg_toxicity": 0.1062
+    }
+  ],
+  "window_cumulative": [
+    {
+      "year_month": "2015-09",
+      "monthly_total": 324,
+      "monthly_toxic": 18,
+      "cum_total_comments": 324,
+      "cum_toxic_comments": 18,
+      "cum_toxic_pct_of_all": 0.01
+    },
+    {
+      "year_month": "2015-10",
+      "monthly_total": 260,
+      "monthly_toxic": 16,
+      "cum_total_comments": 584,
+      "cum_toxic_comments": 34,
+      "cum_toxic_pct_of_all": 0.02
+    },
+    {
+      "year_month": "2015-11",
+      "monthly_total": 31,
+      "monthly_toxic": 0,
+      "cum_total_comments": 615,
+      "cum_toxic_comments": 34,
+      "cum_toxic_pct_of_all": 0.02
+    },
+    {
+      "year_month": "2015-12",
+      "monthly_total": 36,
+      "monthly_toxic": 0,
+      "cum_total_comments": 651,
+      "cum_toxic_comments": 34,
+      "cum_toxic_pct_of_all": 0.02
+    },
+    {
+      "year_month": "2016-01",
+      "monthly_total": 807,
+      "monthly_toxic": 50,
+      "cum_total_comments": 1458,
+      "cum_toxic_comments": 84,
+      "cum_toxic_pct_of_all": 0.06
+    },
+    {
+      "year_month": "2016-02",
+      "monthly_total": 3778,
+      "monthly_toxic": 157,
+      "cum_total_comments": 5236,
+      "cum_toxic_comments": 241,
+      "cum_toxic_pct_of_all": 0.17
+    },
+    {
+      "year_month": "2016-03",
+      "monthly_total": 14045,
+      "monthly_toxic": 918,
+      "cum_total_comments": 19281,
+      "cum_toxic_comments": 1159,
+      "cum_toxic_pct_of_all": 0.8
+    },
+    {
+      "year_month": "2016-04",
+      "monthly_total": 28239,
+      "monthly_toxic": 2015,
+      "cum_total_comments": 47520,
+      "cum_toxic_comments": 3174,
+      "cum_toxic_pct_of_all": 2.2
+    },
+    {
+      "year_month": "2016-05",
+      "monthly_total": 27331,
+      "monthly_toxic": 1882,
+      "cum_total_comments": 74851,
+      "cum_toxic_comments": 5056,
+      "cum_toxic_pct_of_all": 3.5
+    },
+    {
+      "year_month": "2016-06",
+      "monthly_total": 30445,
+      "monthly_toxic": 2276,
+      "cum_total_comments": 105296,
+      "cum_toxic_comments": 7332,
+      "cum_toxic_pct_of_all": 5.08
+    },
+    {
+      "year_month": "2016-07",
+      "monthly_total": 32694,
+      "monthly_toxic": 2663,
+      "cum_total_comments": 137990,
+      "cum_toxic_comments": 9995,
+      "cum_toxic_pct_of_all": 6.92
+    },
+    {
+      "year_month": "2016-08",
+      "monthly_total": 36341,
+      "monthly_toxic": 3125,
+      "cum_total_comments": 174331,
+      "cum_toxic_comments": 13120,
+      "cum_toxic_pct_of_all": 9.09
+    },
+    {
+      "year_month": "2016-09",
+      "monthly_total": 35844,
+      "monthly_toxic": 3092,
+      "cum_total_comments": 210175,
+      "cum_toxic_comments": 16212,
+      "cum_toxic_pct_of_all": 11.23
+    },
+    {
+      "year_month": "2016-10",
+      "monthly_total": 53057,
+      "monthly_toxic": 4295,
+      "cum_total_comments": 263232,
+      "cum_toxic_comments": 20507,
+      "cum_toxic_pct_of_all": 14.21
+    },
+    {
+      "year_month": "2016-11",
+      "monthly_total": 61916,
+      "monthly_toxic": 5077,
+      "cum_total_comments": 325148,
+      "cum_toxic_comments": 25584,
+      "cum_toxic_pct_of_all": 17.73
+    },
+    {
+      "year_month": "2016-12",
+      "monthly_total": 108759,
+      "monthly_toxic": 8852,
+      "cum_total_comments": 433907,
+      "cum_toxic_comments": 34436,
+      "cum_toxic_pct_of_all": 23.86
+    },
+    {
+      "year_month": "2017-01",
+      "monthly_total": 126229,
+      "monthly_toxic": 10529,
+      "cum_total_comments": 560136,
+      "cum_toxic_comments": 44965,
+      "cum_toxic_pct_of_all": 31.15
+    },
+    {
+      "year_month": "2017-02",
+      "monthly_total": 106038,
+      "monthly_toxic": 8055,
+      "cum_total_comments": 666174,
+      "cum_toxic_comments": 53020,
+      "cum_toxic_pct_of_all": 36.73
+    },
+    {
+      "year_month": "2017-03",
+      "monthly_total": 116462,
+      "monthly_toxic": 8259,
+      "cum_total_comments": 782636,
+      "cum_toxic_comments": 61279,
+      "cum_toxic_pct_of_all": 42.46
+    },
+    {
+      "year_month": "2017-04",
+      "monthly_total": 98224,
+      "monthly_toxic": 7301,
+      "cum_total_comments": 880860,
+      "cum_toxic_comments": 68580,
+      "cum_toxic_pct_of_all": 47.51
+    },
+    {
+      "year_month": "2017-05",
+      "monthly_total": 114301,
+      "monthly_toxic": 8730,
+      "cum_total_comments": 995161,
+      "cum_toxic_comments": 77310,
+      "cum_toxic_pct_of_all": 53.56
+    },
+    {
+      "year_month": "2017-06",
+      "monthly_total": 142729,
+      "monthly_toxic": 11012,
+      "cum_total_comments": 1137890,
+      "cum_toxic_comments": 88322,
+      "cum_toxic_pct_of_all": 61.19
+    },
+    {
+      "year_month": "2017-07",
+      "monthly_total": 152169,
+      "monthly_toxic": 11844,
+      "cum_total_comments": 1290059,
+      "cum_toxic_comments": 100166,
+      "cum_toxic_pct_of_all": 69.4
+    },
+    {
+      "year_month": "2017-08",
+      "monthly_total": 146302,
+      "monthly_toxic": 12985,
+      "cum_total_comments": 1436361,
+      "cum_toxic_comments": 113151,
+      "cum_toxic_pct_of_all": 78.4
+    },
+    {
+      "year_month": "2017-09",
+      "monthly_total": 145804,
+      "monthly_toxic": 12074,
+      "cum_total_comments": 1582165,
+      "cum_toxic_comments": 125225,
+      "cum_toxic_pct_of_all": 86.76
+    },
+    {
+      "year_month": "2017-10",
+      "monthly_total": 161904,
+      "monthly_toxic": 14062,
+      "cum_total_comments": 1744069,
+      "cum_toxic_comments": 139287,
+      "cum_toxic_pct_of_all": 96.5
+    },
+    {
+      "year_month": "2017-11",
+      "monthly_total": 60805,
+      "monthly_toxic": 5047,
+      "cum_total_comments": 1804874,
+      "cum_toxic_comments": 144334,
+      "cum_toxic_pct_of_all": 100.0
+    }
+  ],
+  "timestamp_available": true
+}

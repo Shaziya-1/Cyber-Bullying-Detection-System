@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}Offline Simulation - Cyberbullying Detection{% endblock %}
+
+{% block extra_css %}
+.page-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+.sim-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.sim-controls {
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-danger { background: var(--accent-danger); color: white; }
+.btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-box {
+  background: rgba(0,0,0,0.02);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+body.dark .stat-box { background: rgba(255,255,255,0.02); }
+.stat-label { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.stat-val { font-size: 1.8rem; font-weight: 800; color: var(--primary); margin-top: 4px; }
+.stat-val.alert { color: var(--accent-danger); }
+
+.log-container {
+  max-height: 500px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.log-item {
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  animation: fadeIn 0.3s ease-out;
+  border-left: 4px solid var(--border);
+}
+.log-item.bullying {
+  border-left-color: var(--accent-danger);
+  background: rgba(239, 68, 68, 0.03);
+}
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.log-text {
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.log-meta {
+  display: flex;
+  gap: 10px;
+}
+.badge {
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(128,128,128,0.1);
+  color: var(--text);
+}
+.badge.danger { background: rgba(239,68,68,0.15); color: var(--accent-danger); }
+.badge.safe { background: rgba(16,185,129,0.15); color: var(--accent-success); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+  <div class="card">
+    <div class="sim-header">
+      <h2 style="margin:0; color: var(--text);">Offline Monitoring Simulation</h2>
+      <div class="sim-controls">
+        <button class="btn btn-primary" id="btnStart">Start Monitoring</button>
+        <button class="btn btn-danger" id="btnStop" disabled>Stop</button>
+        <button class="btn btn-secondary" id="btnClear">Clear</button>
+      </div>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-label">Status</div>
+        <div class="stat-val" id="valStatus" style="color: var(--muted); font-size: 1.4rem;">Idle</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Comments Processed</div>
+        <div class="stat-val" id="valProcessed">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Bullying Detected</div>
+        <div class="stat-val alert" id="valBullying">0</div>
+      </div>
+    </div>
+
+    <div class="log-container" id="logContainer">
+      <div style="text-align:center; color: var(--muted); padding: 40px;" id="emptyState">
+        Click "Start Monitoring" to begin the simulation stream.
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  let simInterval = null;
+  let processedCount = 0;
+  let bullyingCount = 0;
+
+  const btnStart = document.getElementById('btnStart');
+  const btnStop = document.getElementById('btnStop');
+  const btnClear = document.getElementById('btnClear');
+  const logContainer = document.getElementById('logContainer');
+  const emptyState = document.getElementById('emptyState');
+  
+  const valStatus = document.getElementById('valStatus');
+  const valProcessed = document.getElementById('valProcessed');
+  const valBullying = document.getElementById('valBullying');
+
+  function escapeHtml(str) {
+    return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+  }
+
+  async function fetchComment() {
+    try {
+      const res = await fetch('/api/simulate', { method: 'POST' });
+      const data = await res.json();
+      
+      processedCount++;
+      const isBully = data.prediction === 'Bullying';
+      if (isBully) bullyingCount++;
+      
+      valProcessed.innerText = processedCount;
+      valBullying.innerText = bullyingCount;
+
+      if(emptyState) emptyState.style.display = 'none';
+
+      const div = document.createElement('div');
+      div.className = `log-item ${isBully ? 'bullying' : ''}`;
+      div.innerHTML = `
+        <div class="log-header">
+          <span>Incoming Event</span>
+          <span>${data.timestamp}</span>
+        </div>
+        <div class="log-text">"${escapeHtml(data.comment)}"</div>
+        <div class="log-meta">
+          <span class="badge ${isBully ? 'danger' : 'safe'}">${data.prediction}</span>
+          <span class="badge">Risk: ${data.risk_score}</span>
+          <span class="badge">Severity: ${data.severity}</span>
+        </div>
+      `;
+      logContainer.prepend(div);
+
+      // Keep only last 50
+      if(logContainer.children.length > 50) {
+        logContainer.removeChild(logContainer.lastChild);
+      }
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
+  btnStart.addEventListener('click', () => {
+    if (simInterval) return;
+    btnStart.disabled = true;
+    btnStop.disabled = false;
+    valStatus.innerText = 'Monitoring Active';
+    valStatus.style.color = 'var(--accent-success)';
+    
+    // Fetch immediately, then every 3 seconds
+    fetchComment();
+    simInterval = setInterval(fetchComment, 3000);
+  });
+
+  btnStop.addEventListener('click', () => {
+    if (simInterval) {
+      clearInterval(simInterval);
+      simInterval = null;
+    }
+    btnStart.disabled = false;
+    btnStop.disabled = true;
+    valStatus.innerText = 'Stopped';
+    valStatus.style.color = 'var(--accent-danger)';
+  });
+
+  btnClear.addEventListener('click', () => {
+    if(simInterval) btnStop.click();
+    processedCount = 0;
+    bullyingCount = 0;
+    valProcessed.innerText = '0';
+    valBullying.innerText = '0';
+    valStatus.innerText = 'Idle';
+    valStatus.style.color = 'var(--muted)';
+    logContainer.innerHTML = '<div style="text-align:center; color: var(--muted); padding: 40px;" id="emptyState">Click "Start Monitoring" to begin the simulation stream.</div>';
+  });
+</script>
+{% endblock %}

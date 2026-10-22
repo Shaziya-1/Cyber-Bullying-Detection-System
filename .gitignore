@@ -1,0 +1,46 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.class
+*.pyc
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment variables & secrets
+.env
+.env.*
+*.env
+!.env.example
+
+# Runtime SQLite database (generated at runtime)
+platform.db
+*.sqlite
+*.sqlite3
+
+# Logs & profiling
+*.log
+edge_test_profile/
+dump.txt
+dump3.txt
+
+# Editor and IDE directories
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Large datasets exceeding GitHub 100MB limit (Civil Comments 778MB)
+civil_comments_train.csv
+
+# Temporary experimental candidate model files
+models/model_improvement/experimental_candidate_*
+candidate_search_results.json
+
+# Pytest & scratch files
+.pytest_cache/
+scratch*
+test_invalid.csv

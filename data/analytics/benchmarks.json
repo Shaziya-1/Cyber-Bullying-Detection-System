@@ -1,0 +1,58 @@
+{
+  "operations": [
+    {
+      "operation": "CSV Ingestion (1.8M rows)",
+      "input_records": 1804874,
+      "output_records": 1804874,
+      "execution_time_sec": 18.167
+    },
+    {
+      "operation": "Data Quality & Cleaning",
+      "input_records": 1804874,
+      "output_records": 1804874,
+      "execution_time_sec": 104.589
+    },
+    {
+      "operation": "Transformations & Feature Engineering",
+      "input_records": 1804874,
+      "output_records": 1804874,
+      "execution_time_sec": 51.998
+    },
+    {
+      "operation": "Spark SQL Analytics (7 Queries)",
+      "input_records": 1804874,
+      "output_records": 1804874,
+      "execution_time_sec": 10.96
+    },
+    {
+      "operation": "Spark Window Functions (Rankings & Cum. Sums)",
+      "input_records": 1804874,
+      "output_records": 20,
+      "execution_time_sec": 21.774
+    },
+    {
+      "operation": "Parquet Write (Snappy, Partitioned by Year)",
+      "input_records": 1804874,
+      "output_records": 1804874,
+      "execution_time_sec": 24.854
+    },
+    {
+      "operation": "Parquet Read & Verification",
+      "input_records": 1804874,
+      "output_records": 1804874,
+      "execution_time_sec": 1.015
+    }
+  ],
+  "total_pipeline_time_sec": 248.37,
+  "timings": {
+    "spark_init_time": 15.008,
+    "csv_read_time": 18.167,
+    "cleaning_time": 104.589,
+    "transformation_time": 51.998,
+    "spark_sql_time": 10.96,
+    "window_analytics_time": 21.774,
+    "parquet_write_time": 24.854,
+    "parquet_read_time": 1.015,
+    "total_pipeline_time": 248.37
+  }
+}

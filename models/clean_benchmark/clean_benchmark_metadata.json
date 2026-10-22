@@ -1,0 +1,129 @@
+{
+  "experiment_name": "clean_zero_leakage_model_benchmark",
+  "timestamp": "2026-09-16 14:57:17",
+  "dataset_statistics": {
+    "original_csv_rows": 18149,
+    "nan_rows_dropped": 0,
+    "conflicting_label_groups_dropped": 1,
+    "conflicting_rows_dropped": 3,
+    "duplicates_removed": 1084,
+    "clean_unique_rows": 17065,
+    "train_size": 13652,
+    "test_size": 3413,
+    "train_label_distribution": {
+      "bullying": 8468,
+      "safe": 5184
+    },
+    "test_label_distribution": {
+      "bullying": 2117,
+      "safe": 1296
+    },
+    "random_state": 42,
+    "test_size_ratio": 0.2,
+    "stratified": true
+  },
+  "leakage_verification": {
+    "train_test_exact_overlap": 0,
+    "train_test_normalized_overlap": 0,
+    "civil_comments_sample_test_overlap": 0,
+    "baseline_vectorizer_fitted_on_train_only": true,
+    "enhanced_vectorizer_fitted_on_train_only": true,
+    "status": "LEAKAGE-FREE"
+  },
+  "civil_comments_supplementary": {
+    "sample_size": 100000,
+    "toxic_count": 7997,
+    "safe_count": 92003,
+    "random_state": 42,
+    "sampling_method": "stratified",
+    "proxy_threshold": 0.5
+  },
+  "model_parameters": {
+    "vectorizer": {
+      "type": "TfidfVectorizer",
+      "max_features": 10000,
+      "lowercase": true
+    },
+    "classifier": {
+      "type": "SGDClassifier",
+      "loss": "hinge",
+      "max_iter": 1000,
+      "random_state": 42
+    }
+  },
+  "metrics": {
+    "clean_baseline_sgd": {
+      "accuracy": 0.9212,
+      "precision": 0.9455,
+      "recall": 0.9263,
+      "f1_score": 0.9358,
+      "confusion_matrix": {
+        "tp": 1961,
+        "fn": 156,
+        "fp": 113,
+        "tn": 1183
+      },
+      "training_time_sec": 0.367,
+      "eval_time_sec": 0.0784
+    },
+    "clean_enhanced_sgd": {
+      "accuracy": 0.8831,
+      "precision": 0.9735,
+      "recall": 0.8342,
+      "f1_score": 0.8985,
+      "confusion_matrix": {
+        "tp": 1766,
+        "fn": 351,
+        "fp": 48,
+        "tn": 1248
+      },
+      "training_time_sec": 3.681,
+      "eval_time_sec": 0.0838
+    },
+    "differences_enhanced_minus_baseline": {
+      "accuracy_diff": -0.0381,
+      "precision_diff": 0.028,
+      "recall_diff": -0.0921,
+      "f1_score_diff": -0.0373,
+      "fp_diff": -65,
+      "fn_diff": 195
+    }
+  },
+  "fixed_examples_predictions": [
+    {
+      "text": "Have a wonderful day and enjoy the sunshine!",
+      "base_pred_raw": 0,
+      "base_pred_label": "Non-Bullying (Safe)",
+      "enh_pred_raw": 0,
+      "enh_pred_label": "Non-Bullying (Safe)"
+    },
+    {
+      "text": "You are pathetic and nobody wants you here!",
+      "base_pred_raw": -1,
+      "base_pred_label": "Bullying (Toxic)",
+      "enh_pred_raw": -1,
+      "enh_pred_label": "Bullying (Toxic)"
+    },
+    {
+      "text": "You are useless, stupid, and pathetic. Nobody likes you.",
+      "base_pred_raw": -1,
+      "base_pred_label": "Bullying (Toxic)",
+      "enh_pred_raw": -1,
+      "enh_pred_label": "Bullying (Toxic)"
+    },
+    {
+      "text": "Can you help me understand this topic?",
+      "base_pred_raw": 0,
+      "base_pred_label": "Non-Bullying (Safe)",
+      "enh_pred_raw": 0,
+      "enh_pred_label": "Non-Bullying (Safe)"
+    },
+    {
+      "text": "You made them fool beautifully",
+      "base_pred_raw": -1,
+      "base_pred_label": "Bullying (Toxic)",
+      "enh_pred_raw": -1,
+      "enh_pred_label": "Bullying (Toxic)"
+    }
+  ]
+}

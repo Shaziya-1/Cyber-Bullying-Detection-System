@@ -1,0 +1,34 @@
+{
+  "experiment_name": "civil_comments_enhanced_sgd_classifier",
+  "timestamp": "2026-09-16 14:50:04",
+  "training_data_statistics": {
+    "original_training_records": 14519,
+    "civil_comments_records_used": 100000,
+    "total_combined_records": 114519,
+    "toxic_records": 17326,
+    "non_toxic_records": 97193,
+    "sampling_method": "stratified",
+    "random_state": 42,
+    "reason_for_sampling": "Reproducible and memory-safe training on local machine while preserving full toxicity/non-toxic class ratio"
+  },
+  "vectorizer_configuration": {
+    "type": "TfidfVectorizer",
+    "lowercase": true,
+    "max_features": 10000,
+    "vocab_size": 10000
+  },
+  "classifier_configuration": {
+    "type": "SGDClassifier",
+    "loss": "hinge",
+    "max_iter": 1000,
+    "random_state": 42,
+    "classes": [
+      -1,
+      0
+    ]
+  },
+  "performance_timings": {
+    "baseline_eval_time_sec": 0.077,
+    "enhanced_training_time_sec": 4.786
+  }
+}

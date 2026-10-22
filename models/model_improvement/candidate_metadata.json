@@ -1,0 +1,22 @@
+{
+  "model_name": "candidate_model.pkl (Validated Final Production Model)",
+  "status": "Active Production Model",
+  "architecture": "SGDClassifier(loss='hinge', alpha=7.0e-5, penalty='elasticnet', l1_ratio=0.18, max_iter=1000, random_state=42)",
+  "vectorizer": "FeatureUnion(Word_TFIDF (1,2) max 20k + CharWB_TFIDF (3,5) max 20k)",
+  "base_training_records": 13652,
+  "augmentation_records": 67,
+  "total_train_records": 13719,
+  "test_records": 3413,
+  "metrics_on_test_set": {
+    "accuracy": 0.9341,
+    "precision": 0.9509,
+    "recall": 0.9424,
+    "f1_score": 0.9466,
+    "confusion_matrix": {
+      "tp": 1995,
+      "fn": 122,
+      "fp": 103,
+      "tn": 1193
+    }
+  }
+}

@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+
+{% block title %}Cyberbullying Detection - Manual{% endblock %}
+
+{% block extra_css %}
+.page-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.manual-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.textarea-wrapper {
+  position: relative;
+}
+
+textarea.form-control {
+  width: 100%;
+  min-height: 180px;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  padding: 16px;
+  font-size: 1.05rem;
+  color: var(--text);
+  background: transparent;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+textarea.form-control:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+}
+
+.counts {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 1rem;
+}
+
+.btn-submit {
+  background: var(--primary);
+  color: white;
+  flex: 1;
+}
+
+.btn-submit:hover {
+  background: var(--primary-hover);
+}
+
+.btn-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-clear {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-clear:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+body.dark .btn-clear:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.error-msg {
+  color: var(--accent-danger);
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: none;
+}
+
+/* Result Card */
+.result-card {
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.result-badge.bullying { background: var(--accent-danger); }
+.result-badge.non-bullying { background: var(--accent-success); }
+
+.result-desc {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.hint {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 24px;
+  text-align: center;
+  background: rgba(0,0,0,0.02);
+  padding: 12px;
+  border-radius: 8px;
+}
+body.dark .hint {
+  background: rgba(255,255,255,0.02);
+}
+
+.loader {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+  <div class="card">
+    <div class="title">Manual Text Analysis</div>
+
+    <form class="manual-form" method="POST" action="{{ url_for('manual') }}" id="analysisForm">
+      <div class="textarea-wrapper">
+        <textarea name="text" id="textInput" class="form-control" placeholder="Enter text to analyze..." aria-label="Text to analyze" required>{{ last_input or '' }}</textarea>
+        <div class="counts">
+          <span id="charCount">0 characters</span>
+          <span id="wordCount">0 words</span>
+        </div>
+      </div>
+      
+      <div class="error-msg" id="errorMsg" role="alert">Please enter some text to analyze.</div>
+
+      <div class="controls">
+        <button type="submit" class="btn btn-submit" id="submitBtn">
+          Analyze Text <span class="loader" id="submitLoader"></span>
+        </button>
+        <button type="button" class="btn btn-clear" id="clearBtn">Clear</button>
+      </div>
+
+      {% if prediction is not none %}
+        <div class="result-card" role="region" aria-live="polite">
+          <div class="result-badge {% if prediction == 1 %}bullying{% else %}non-bullying{% endif %}">
+            {% if prediction == 1 %}Bullying Detected{% else %}No Bullying Detected{% endif %}
+          </div>
+          <div class="result-desc">
+            {% if explanation %}
+              {{ explanation }}
+            {% elif prediction == 1 %}
+              The model categorized this text as potentially harmful or abusive.
+            {% else %}
+              The model did not find clear evidence of cyberbullying in this text.
+            {% endif %}
+          </div>
+          {% if ml_prediction is not none and method == 'llm' %}
+            <div style="margin-top: 14px; font-size: 0.85rem; color: var(--muted); border-top: 1px dashed var(--border); padding-top: 8px;">
+              <span><strong>Final Classification:</strong> Gemini LLM</span> &bull; 
+              <span><strong>ML Baseline:</strong> {% if ml_prediction == 1 %}Bullying Detected{% else %}No Bullying Detected{% endif %}</span>
+              {% if ml_prediction != prediction %}
+                <span style="color: var(--primary); font-weight: 700;"> &bull; (LLM Contextual Override)</span>
+              {% endif %}
+            </div>
+          {% elif method == 'ml_fallback' %}
+            <div style="margin-top: 14px; font-size: 0.85rem; color: var(--muted); border-top: 1px dashed var(--border); padding-top: 8px;">
+              <span><strong>Mode:</strong> Fallback to TF-IDF ML Model (LLM unavailable)</span>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="hint">
+        Tip: Try analyzing phrases like "You are so dumb" or "Have a wonderful day" to see the model in action.
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const textInput = document.getElementById('textInput');
+    const charCount = document.getElementById('charCount');
+    const wordCount = document.getElementById('wordCount');
+    const clearBtn = document.getElementById('clearBtn');
+    const analysisForm = document.getElementById('analysisForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitLoader = document.getElementById('submitLoader');
+    const errorMsg = document.getElementById('errorMsg');
+
+    let isSubmitting = false;
+
+    function updateCounts() {
+      const text = textInput.value;
+      charCount.textContent = `${text.length} characters`;
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      wordCount.textContent = `${words} words`;
+    }
+
+    textInput.addEventListener('input', updateCounts);
+    
+    updateCounts();
+
+    clearBtn.addEventListener('click', () => {
+      if (isSubmitting) return;
+      textInput.value = '';
+      updateCounts();
+      textInput.focus();
+      const resultCard = document.querySelector('.result-card');
+      if(resultCard) resultCard.style.display = 'none';
+      errorMsg.style.display = 'none';
+    });
+
+    analysisForm.addEventListener('submit', (e) => {
+      if (isSubmitting) {
+        e.preventDefault();
+        return;
+      }
+      if (!textInput.value.trim()) {
+        e.preventDefault();
+        errorMsg.style.display = 'block';
+        textInput.focus();
+        return;
+      }
+      isSubmitting = true;
+      errorMsg.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.style.cursor = 'not-allowed';
+      submitLoader.style.display = 'inline-block';
+    });
+
+    textInput.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        if (isSubmitting) return;
+        if (textInput.value.trim()) {
+          if (typeof analysisForm.requestSubmit === 'function') {
+            analysisForm.requestSubmit();
+          } else {
+            analysisForm.dispatchEvent(new Event('submit', {cancelable: true}));
+          }
+        } else {
+          errorMsg.style.display = 'block';
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

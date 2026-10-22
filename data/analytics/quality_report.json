@@ -1,0 +1,81 @@
+{
+  "total_input_rows": 1804874,
+  "valid_rows": 1804874,
+  "invalid_rows": 0,
+  "null_counts": {
+    "id": 0,
+    "target": 0,
+    "comment_text": 0,
+    "severe_toxicity": 0,
+    "obscene": 0,
+    "identity_attack": 0,
+    "insult": 0,
+    "threat": 0,
+    "sexual_explicit": 0,
+    "created_date": 0,
+    "publication_id": 0,
+    "article_id": 0,
+    "rating": 0
+  },
+  "duplicate_comment_count": 24051,
+  "duplicate_row_count": 0,
+  "unique_comments": 1780823,
+  "length_stats": {
+    "min_length": 1,
+    "max_length": 1906,
+    "avg_length": 297.23,
+    "stddev_length": 269.2
+  },
+  "target_distribution": {
+    "toxic_count": 144334,
+    "non_toxic_count": 1660540,
+    "toxicity_rate_pct": 8.0,
+    "avg_toxicity": 0.103,
+    "min_toxicity": 0.0,
+    "max_toxicity": 1.0
+  },
+  "subtype_distributions": [
+    {
+      "avg_score": 0.0812,
+      "count": 106534,
+      "rate_pct": 5.9,
+      "subtype": "Insult",
+      "rank": 1
+    },
+    {
+      "avg_score": 0.0226,
+      "count": 13410,
+      "rate_pct": 0.74,
+      "subtype": "Identity Attack",
+      "rank": 2
+    },
+    {
+      "avg_score": 0.0139,
+      "count": 9603,
+      "rate_pct": 0.53,
+      "subtype": "Obscene",
+      "rank": 3
+    },
+    {
+      "avg_score": 0.0066,
+      "count": 4686,
+      "rate_pct": 0.26,
+      "subtype": "Sexual Explicit",
+      "rank": 4
+    },
+    {
+      "avg_score": 0.0093,
+      "count": 4280,
+      "rate_pct": 0.24,
+      "subtype": "Threat",
+      "rank": 5
+    },
+    {
+      "avg_score": 0.0046,
+      "count": 13,
+      "rate_pct": 0.0,
+      "subtype": "Severe Toxicity",
+      "rank": 6
+    }
+  ]
+}
