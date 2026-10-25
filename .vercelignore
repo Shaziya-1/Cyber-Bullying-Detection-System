@@ -1,0 +1,69 @@
+# Vercel Deployment Ignore File
+# Prevents large data files, caches, and offline pipelines from exceeding Vercel limits
+
+# Large dataset files (>100MB / non-web assets)
+*.csv
+civil_comments_train.csv
+instagram_comments.csv
+dataset.csv
+cyberbullying_dashboard_dataset.csv
+cyberbullying_data.csv
+cyberbullying_dummy_dataset.csv
+indian_cyberbullying_dataset.csv
+
+# Reports, documents, and slides
+*.pdf
+*.docx
+*.ipynb
+uploads/
+docs/
+report_assets/
+cover_page.png
+Mini_Project_Report_*
+CyberShield_AI_*
+IEEE_Poster*
+
+# Offline Big Data and experiment pipelines
+big_data/
+data/parquet/
+experiments/
+scratch/
+edge_test_profile/
+
+# Unused heavy pickle models (web app uses candidate_model & candidate_vectorizer in models/model_improvement)
+BaggingClassifier.pkl
+MultinomialNB.pkl
+DecisionTreeClassifier.pkl
+LinearSVC.pkl
+LinearSVCTuned.pkl
+LogisticRegression.pkl
+SGDClassifier.pkl
+AdaBoostClassifier.pkl
+tfidfvectoizer.pkl
+tfidfvectoizer_fitted.pkl
+
+# Python and Git caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.git/
+.gitignore
+
+# Environment files with sensitive credentials
+.env
+*.env
+!.env.example
+
+# Development and scratch scripts
+test_*.py
+build_*.py
+generate_report_visuals.py
+scratch*.py
+check.py
+check_schema.py
+update_model_fix.py
+train_model.py
+prefit_vectorizer.py
+dump*.txt

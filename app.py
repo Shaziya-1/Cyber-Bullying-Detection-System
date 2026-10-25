@@ -1,21 +1,62 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-import pickle
-import sqlite3
 import os
-
+import sys
 import json
+import sqlite3
+import pickle
+import shutil
+import tempfile
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from llm_analyzer import hybrid_analyze
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+
+app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
+app.secret_key = os.environ.get('FLASK_SECRET_KEY') or os.urandom(24)
+
+def get_db_path():
+    """Return SQLite database path, copying to /tmp in read-only / Vercel serverless environments."""
+    if os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME') or not os.access(BASE_DIR, os.W_OK):
+        tmp_db = os.path.join(tempfile.gettempdir(), 'platform.db')
+        if not os.path.exists(tmp_db):
+            orig_db = os.path.join(BASE_DIR, 'platform.db')
+            if os.path.exists(orig_db):
+                try:
+                    shutil.copyfile(orig_db, tmp_db)
+                except Exception as e:
+                    print(f"Warning: could not copy seed db: {e}")
+        return tmp_db
+    return os.path.join(BASE_DIR, 'platform.db')
+
 def get_db():
-    conn = sqlite3.connect('platform.db')
+    conn = sqlite3.connect(get_db_path())
     conn.row_factory = sqlite3.Row
     return conn
 
-app = Flask(__name__)
-app.secret_key = os.urandom(24)
+def init_db():
+    try:
+        conn = get_db()
+        conn.execute('''
+            CREATE TABLE IF NOT EXISTS cases (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                comment TEXT,
+                prediction INTEGER,
+                risk_score REAL,
+                severity TEXT,
+                status TEXT DEFAULT 'New',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Database initialization notice: {e}")
+
+init_db()
 
 # Load candidate context-aware model and vectorizer
-MODEL_DIR = os.path.join(os.path.dirname(__file__), "models", "model_improvement")
+MODEL_DIR = os.path.join(BASE_DIR, "models", "model_improvement")
 VEC_PATH = os.path.join(MODEL_DIR, "candidate_vectorizer.pkl")
 MODEL_PATH = os.path.join(MODEL_DIR, "candidate_model.pkl")
 
@@ -23,8 +64,8 @@ if os.path.exists(VEC_PATH) and os.path.exists(MODEL_PATH):
     vectorizer = pickle.load(open(VEC_PATH, 'rb'))
     model = pickle.load(open(MODEL_PATH, 'rb'))
 else:
-    vectorizer = pickle.load(open("best_vectorizer.pkl", 'rb'))
-    model = pickle.load(open("best_model.pkl", 'rb'))
+    vectorizer = pickle.load(open(os.path.join(BASE_DIR, "best_vectorizer.pkl"), 'rb'))
+    model = pickle.load(open(os.path.join(BASE_DIR, "best_model.pkl"), 'rb'))
 
 @app.route('/', methods=['GET'])
 def index():
@@ -92,7 +133,7 @@ def dashboard():
 
 @app.route('/big-data')
 def big_data():
-    analytics_dir = os.path.join(os.path.dirname(__file__), 'data', 'analytics')
+    analytics_dir = os.path.join(BASE_DIR, 'data', 'analytics')
     
     def load_json(filename, default_val=None):
         path = os.path.join(analytics_dir, filename)
